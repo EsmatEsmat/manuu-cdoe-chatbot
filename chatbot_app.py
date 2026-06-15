@@ -302,6 +302,14 @@ st.markdown(
     """,
     unsafe_allow_html=True
 )
+# Centered Logo Section
+col1, col2, col3 = st.columns([1, 1, 1])
+with col2:
+    try:
+        st.image("cdoe_logo.png", width=160)
+    except:
+        pass
+
 # Beautiful Institutional Title Styling
 st.markdown(
     """
