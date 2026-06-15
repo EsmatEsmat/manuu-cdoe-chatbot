@@ -297,7 +297,6 @@ st.markdown(
 col1, col2, col3 = st.columns([1, 2, 1])
 
 with col2:
-    # Try loading the logo; if it was commented out, it safely falls back to blank space
     try:
         st.image("cdoe_logo.png", width=180)
     except:
