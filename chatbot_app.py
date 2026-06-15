@@ -253,7 +253,7 @@ st.info("Voice search tip: click inside the question box and press Windows + H t
 
 student_query = st.text_input(
     "Ask your question:",
-    placeholder="Example: mba ki eligibility kya hai"
+    placeholder="Example: B.Ed. ki eligibility kya hai?"
 )
 
 if student_query:
