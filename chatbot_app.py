@@ -293,16 +293,11 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-# Centered Logo Implementation
+# Centered Logo Implementation (Foolproof Version)
 try:
-    st.markdown(
-        """
-        <div style="display: flex; justify-content: center; align-items: center; margin-bottom: 10px;">
-            <img st.image("cdoe_logo.png", width=160) style="object-fit: contain;">
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
+    _, center_col, _ = st.columns([1, 1, 1])
+    with center_col:
+        st.image("cdoe_logo.png", use_container_width=True)
 except:
     pass
 
