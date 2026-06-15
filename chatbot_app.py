@@ -234,13 +234,13 @@ def show_speech_button(answer_text):
 # STREAMLIT USER INTERFACE (UPGRADED)
 # -----------------------------------
 
-# Custom Premium University Dashboard Styling
+# Custom Premium University Dashboard Styling (Golden Parchment Edition)
 st.markdown(
     """
     <style>
-    /* Main Background: Warm vintage parchment / old paper feel */
+    /* Main Background: True warm vintage paper / golden ivory feel */
     .stApp {
-        background: linear-gradient(135deg, #f7f4eb 0%, #f1ede2 100%);
+        background: linear-gradient(135deg, #fbf8f0 0%, #f5eedc 100%);
     }
     
     /* Center the main content area beautifully on widescreen monitors */
@@ -250,36 +250,36 @@ st.markdown(
         padding-bottom: 3rem !important;
     }
 
-    /* Info Banner Restyling: Muted vintage tint */
+    /* Info Banner Restyling: Warm golden-sand tint */
     .stAlert {
-        background-color: #eae5d8 !important;
+        background-color: #ede6d4 !important;
         border-left: 5px solid #16a34a !important;
-        color: #27422b !important;
+        color: #2e3b2f !important;
         border-radius: 12px;
         box-shadow: 0 2px 4px rgba(0,0,0,0.01);
     }
     
-    /* Input Box: Highlighting in clean Red when clicked */
+    /* Input Box: Modern, clean border with crisp white background */
     div.stTextInput > div > div > input {
         border-radius: 14px;
-        border: 2px solid #d3cbba;
+        border: 2px solid #dcd4c4;
         padding: 14px;
         font-size: 16px;
         background-color: #ffffff;
-        box-shadow: inset 0 1px 3px rgba(0,0,0,0.02);
+        box-shadow: inset 0 1px 3px rgba(0,0,0,0.01);
     }
     div.stTextInput > div > div > input:focus {
         border-color: #dc2626 !important;
         box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.15) !important;
     }
     
-    /* Chat Answer Card: Super clean card that pops out against the parchment background */
+    /* Chat Answer Card: Super clean white card that pops brilliantly against the gold tint */
     .answer-box {
         background-color: #ffffff;
         padding: 26px;
         border-radius: 18px;
         box-shadow: 0 10px 25px rgba(0, 0, 0, 0.04);
-        border: 1px solid #e1dacb;
+        border: 1px solid #e5dcce;
         border-left: 6px solid #16a34a;
         margin-top: 20px;
         margin-bottom: 20px;
