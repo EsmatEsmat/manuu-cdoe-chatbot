@@ -143,7 +143,8 @@ def get_answer(user_question):
             "intent": "-",
             "score": round(float(safety_check_score), 3)
         }
-return {
+
+    return {
         "answer": row["Answer"],
         "matched_question": row["Main Question"],
         "category": row["Category"] if "Category" in row else "-",
