@@ -308,7 +308,7 @@ st.markdown(
         <h2 style='color: #1a365d; font-family: "Helvetica Neue", Arial, sans-serif; font-weight: 700; font-size: 24px; margin-bottom: 2px; letter-spacing: 0.5px;'>
             MAULANA AZAD NATIONAL URDU UNIVERSITY
         </h2>
-        <p style='color: #cca43b; font-size: 15px; font-weight: 600; text-transform: uppercase; letter-spacing: 1.2px; margin-top: 0; margin-bottom: 8px;'>
+        <p style='color: #cca43b; font-size: 15px; font-weight: 800; text-transform: uppercase; letter-spacing: 1.2px; margin-top: 0; margin-bottom: 8px;'>
             Centre for Distance & Online Education
         </p>
         <h1 style='color: #2d3748; font-family: "Helvetica Neue", Arial, sans-serif; font-weight: 800; font-size: 28px; margin-top: 0; margin-bottom: 5px;'>
