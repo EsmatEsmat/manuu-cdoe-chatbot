@@ -305,16 +305,16 @@ except:
 st.markdown(
     """
     <div style='text-align: center; margin-top: -10px; margin-bottom: 25px;'>
-        <h2 style='color: #0f6b4f; font-family: "Helvetica Neue", Arial, sans-serif; font-weight: 700; font-size: 24px; margin-bottom: 3px; letter-spacing: 0.5px;'>
+        <h2 style='color: #1a365d; font-family: "Helvetica Neue", Arial, sans-serif; font-weight: 700; font-size: 24px; margin-bottom: 2px; letter-spacing: 0.5px;'>
             MAULANA AZAD NATIONAL URDU UNIVERSITY
         </h2>
-        <h1 style='color: #2d3748; font-family: "Helvetica Neue", Arial, sans-serif; font-weight: 800; font-size: 30px; margin-top: 0; margin-bottom: 5px;'>
-            🎓 CDOE Support Bot
-        </h1>
-        <p style='color: #cca43b; font-size: 16px; font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; margin-top: 0;'>
+        <p style='color: #cca43b; font-size: 15px; font-weight: 600; text-transform: uppercase; letter-spacing: 1.2px; margin-top: 0; margin-bottom: 8px;'>
             Centre for Distance & Online Education
         </p>
-        <div style='height: 3px; width: 120px; background-color: #cca43b; margin: 15px auto; border-radius: 2px;'></div>
+        <h1 style='color: #2d3748; font-family: "Helvetica Neue", Arial, sans-serif; font-weight: 800; font-size: 28px; margin-top: 0; margin-bottom: 5px;'>
+            🎓 CDOE Student Support
+        </h1>
+        <div style='height: 3px; width: 140px; background-color: #cca43b; margin: 15px auto; border-radius: 2px;'></div>
     </div>
     """,
     unsafe_allow_html=True
