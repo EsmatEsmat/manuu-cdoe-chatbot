@@ -130,9 +130,9 @@ def get_answer(user_question):
     best_score = combined_scores[best_index]
     row = faq.iloc[best_index]
 
-    if best_score < 0.42:
+    if best_score < 0.5:
         return {
-            "answer": "I could not confidently find an answer. Please contact the concerned CDOE support section.",
+            "answer": "I am sorry, I can only answer MANUU CDOE related questions.",
             "matched_question": "No confident match",
             "category": "-",
             "intent": "-",
