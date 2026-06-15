@@ -238,54 +238,54 @@ def show_speech_button(answer_text):
 st.markdown(
     """
     <style>
-    /* Main Background: Soft, warm cream to white gradient */
+    /* Main Background: Soft, clean ivory to white gradient */
     .stApp {
-        background: linear-gradient(135deg, #fdfbf7 0%, #ffffff 100%);
+        background: linear-gradient(135deg, #fafdfb 0%, #ffffff 100%);
     }
     
-    /* Center the main content area and give it structure on wide screens */
+    /* Center the main content area beautifully on widescreen monitors */
     .block-container {
         max-width: 800px !important;
         padding-top: 2rem !important;
         padding-bottom: 3rem !important;
     }
 
-    /* Info Banner Restyling: Using soft maroon/rose tint instead of green */
+    /* Info Banner Restyling: Using soft light green tint */
     .stAlert {
-        background-color: #fdf2f2 !important;
-        border-left: 5px solid #9b1c1c !important;
-        color: #7f1d1d !important;
+        background-color: #f0fdf4 !important;
+        border-left: 5px solid #16a34a !important;
+        color: #166534 !important;
         border-radius: 12px;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        box-shadow: 0 2px 4px rgba(0,0,0,0.01);
     }
     
-    /* Input Box: Modern, clean border that highlights in university red */
+    /* Input Box: Highlighting in clean Red when clicked */
     div.stTextInput > div > div > input {
         border-radius: 14px;
         border: 2px solid #e5e7eb;
         padding: 14px;
         font-size: 16px;
         background-color: #ffffff;
-        box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+        box-shadow: 0 2px 6px rgba(0,0,0,0.01);
     }
     div.stTextInput > div > div > input:focus {
-        border-color: #9b1c1c !important;
-        box-shadow: 0 0 0 3px rgba(155, 28, 28, 0.15) !important;
+        border-color: #dc2626 !important;
+        box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.15) !important;
     }
     
-    /* Chat Answer Card: Premium floating card with a rich maroon accent line */
+    /* Chat Answer Card: Soft Light Green with a solid Green left border */
     .answer-box {
-        background-color: #ffffff;
+        background-color: #f4fbf7;
         padding: 26px;
         border-radius: 18px;
-        box-shadow: 0 10px 25px rgba(155, 28, 28, 0.05), 0 2px 5px rgba(0,0,0,0.02);
-        border: 1px solid #f3f4f6;
-        border-left: 6px solid #9b1c1c;
+        box-shadow: 0 4px 15px rgba(22, 163, 74, 0.04);
+        border: 1px solid #e6f4ed;
+        border-left: 6px solid #16a34a;
         margin-top: 20px;
         margin-bottom: 20px;
     }
     .answer-title {
-        color: #9b1c1c;
+        color: #15803d;
         font-weight: 700;
         font-size: 19px;
         margin-bottom: 10px;
@@ -302,19 +302,12 @@ st.markdown(
     """,
     unsafe_allow_html=True
 )
-# Centered Logo Implementation (Foolproof Version)
-try:
-    _, center_col, _ = st.columns([1, 1, 1])
-    with center_col:
-        st.image("cdoe_logo.png", use_container_width=True)
-except:
-    pass
 
 # Beautiful Institutional Title Styling
 st.markdown(
     """
     <div style='text-align: center; margin-top: -10px; margin-bottom: 30px;'>
-        <h2 style='color: #9b1c1c; font-family: "Helvetica Neue", Arial, sans-serif; font-weight: 700; font-size: 25px; margin-bottom: 4px; letter-spacing: 0.5px;'>
+        <h2 style='color: #dc2626; font-family: "Helvetica Neue", Arial, sans-serif; font-weight: 700; font-size: 25px; margin-bottom: 4px; letter-spacing: 0.5px;'>
             MAULANA AZAD NATIONAL URDU UNIVERSITY
         </h2>
         <p style='color: #cca43b; font-size: 15px; font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; margin-top: 0; margin-bottom: 10px;'>
