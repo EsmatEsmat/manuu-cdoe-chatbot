@@ -238,9 +238,9 @@ def show_speech_button(answer_text):
 st.markdown(
     """
     <style>
-    /* Main Background: Soft, clean ivory to white gradient */
+    /* Main Background: Warm vintage parchment / old paper feel */
     .stApp {
-        background: linear-gradient(135deg, #fafdfb 0%, #ffffff 100%);
+        background: linear-gradient(135deg, #f7f4eb 0%, #f1ede2 100%);
     }
     
     /* Center the main content area beautifully on widescreen monitors */
@@ -250,11 +250,11 @@ st.markdown(
         padding-bottom: 3rem !important;
     }
 
-    /* Info Banner Restyling: Using soft light green tint */
+    /* Info Banner Restyling: Muted vintage tint */
     .stAlert {
-        background-color: #f0fdf4 !important;
+        background-color: #eae5d8 !important;
         border-left: 5px solid #16a34a !important;
-        color: #166534 !important;
+        color: #27422b !important;
         border-radius: 12px;
         box-shadow: 0 2px 4px rgba(0,0,0,0.01);
     }
@@ -262,24 +262,24 @@ st.markdown(
     /* Input Box: Highlighting in clean Red when clicked */
     div.stTextInput > div > div > input {
         border-radius: 14px;
-        border: 2px solid #e5e7eb;
+        border: 2px solid #d3cbba;
         padding: 14px;
         font-size: 16px;
         background-color: #ffffff;
-        box-shadow: 0 2px 6px rgba(0,0,0,0.01);
+        box-shadow: inset 0 1px 3px rgba(0,0,0,0.02);
     }
     div.stTextInput > div > div > input:focus {
         border-color: #dc2626 !important;
         box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.15) !important;
     }
     
-    /* Chat Answer Card: Soft Light Green with a solid Green left border */
+    /* Chat Answer Card: Super clean card that pops out against the parchment background */
     .answer-box {
-        background-color: #f4fbf7;
+        background-color: #ffffff;
         padding: 26px;
         border-radius: 18px;
-        box-shadow: 0 4px 15px rgba(22, 163, 74, 0.04);
-        border: 1px solid #e6f4ed;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.04);
+        border: 1px solid #e1dacb;
         border-left: 6px solid #16a34a;
         margin-top: 20px;
         margin-bottom: 20px;
@@ -302,7 +302,6 @@ st.markdown(
     """,
     unsafe_allow_html=True
 )
-
 # Beautiful Institutional Title Styling
 st.markdown(
     """
