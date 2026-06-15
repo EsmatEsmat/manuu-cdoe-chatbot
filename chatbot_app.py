@@ -231,45 +231,124 @@ def show_speech_button(answer_text):
 
 
 # -----------------------------------
-# STREAMLIT USER INTERFACE
+# STREAMLIT USER INTERFACE (UPGRADED)
 # -----------------------------------
 
-col1, col2, col3 = st.columns([1,2,1])
+# Custom Happy/Professional CSS Styling
+st.markdown(
+    """
+    <style>
+    /* Main Background and Text Settings */
+    .stApp {
+        background: linear-gradient(to bottom, #f4fbf7, #ffffff);
+    }
+    
+    /* Global Info Banner Restyling */
+    .stAlert {
+        background-color: #eafaf1 !important;
+        border-left: 5px solid #0f6b4f !important;
+        color: #0c523d !important;
+        border-radius: 10px;
+    }
+    
+    /* Input Box Focus Border styling */
+    div.stTextInput > div > div > input {
+        border-radius: 12px;
+        border: 2px solid #ced4da;
+        padding: 12px;
+        font-size: 16px;
+    }
+    div.stTextInput > div > div > input:focus {
+        border-color: #0f6b4f !important;
+        box-shadow: 0 0 0 0.2rem rgba(15, 107, 79, 0.25) !important;
+    }
+    
+    /* Chat Answer Box Styling */
+    .answer-box {
+        background-color: #ffffff;
+        padding: 22px;
+        border-radius: 16px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        border: 1px solid #e1e8e5;
+        border-left: 6px solid #0f6b4f;
+        margin-top: 15px;
+        margin-bottom: 15px;
+    }
+    .answer-title {
+        color: #0f6b4f;
+        font-weight: bold;
+        font-size: 18px;
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    .answer-text {
+        font-size: 16px;
+        color: #2d3748;
+        line-height: 1.6;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
+# Header Section with Columns
+col1, col2, col3 = st.columns([1, 2, 1])
 
 with col2:
-    st.image("cdoe_logo.png", width=180)
+    # Try loading the logo; if it was commented out, it safely falls back to blank space
+    try:
+        st.image("cdoe_logo.png", width=180)
+    except:
+        st.write("")
 
+# Beautiful Institutional Title Styling
 st.markdown(
-    "<h1 style='text-align:center;'>CDOE MANUU Student Support Chatbot</h1>",
+    """
+    <div style='text-align: center; margin-top: -10px; margin-bottom: 25px;'>
+        <h1 style='color: #0f6b4f; font-family: "Helvetica Neue", Arial, sans-serif; font-weight: 800; font-size: 32px; margin-bottom: 5px;'>
+            🎓 CDOE MANUU Support Bot
+        </h1>
+        <p style='color: #cca43b; font-size: 18px; font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; margin-top: 0;'>
+            Centre for Distance & Online Education
+        </p>
+        <div style='height: 3px; width: 80px; background-color: #cca43b; margin: 15px auto; border-radius: 2px;'></div>
+    </div>
+    """,
     unsafe_allow_html=True
 )
 
-st.markdown(
-    "<p style='text-align:center;'>Centre for Distance and Online Education</p>",
-    unsafe_allow_html=True
-)
-
-st.info("Voice search tip: click inside the question box and press Windows + H to speak your query.")
+# User Query Interaction
+st.info("💡 **Voice Search Tip:** Click inside the box below and press **Windows Key + H** to speak your question aloud!")
 
 student_query = st.text_input(
-    "Ask your question:",
-    placeholder="Example: B.Ed. ki eligibility kya hai?"
+    "How can I help you today?",
+    placeholder="Type your question here (e.g., assignment last date)..."
 )
 
 if student_query:
+    with st.spinner("✨ Assistant is typing..."):
+        result = get_answer(student_query)
+        save_log(student_query, result)
 
-    result = get_answer(student_query)
+    # Display Answer inside custom beautiful happy box
+    st.markdown(
+        f"""
+        <div class="answer-box">
+            <div class="answer-title">✨ Response for You</div>
+            <div class="answer-text">{result["answer"]}</div>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
 
-    save_log(student_query, result)
-
-    st.markdown("### Answer")
-
-    st.success(result["answer"])
-
+    # Audio playback button
     show_speech_button(result["answer"])
 
-    with st.expander("Match Details"):
-        st.write("Matched Question:", result["matched_question"])
-        st.write("Category:", result["category"])
-        st.write("Intent:", result["intent"])
-        st.write("Confidence Score:", result["score"])
+    # Match Details inside clean dropdown
+    with st.expander("📊 Technical Analytics (For Office Evaluation)"):
+        st.markdown(f"**Confidence Match Score:** `{result['score']}`")
+        st.markdown(f"**Mapped Database Intent:** `{result['intent']}`")
+        st.markdown(f"**Category:** `{result['category']}`")
+        st.markdown(f"**Reference Master Question:** *\"{result['matched_question']}\"*")
