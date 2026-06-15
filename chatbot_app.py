@@ -324,7 +324,7 @@ st.info("💡 **Voice Search Tip:** Click inside the box below and press **Windo
 
 student_query = st.text_input(
     "How can I help you today?",
-    placeholder="Type your question here (e.g., assignment last date)..."
+    placeholder="Type your question here (e.g., MBA eligibility criteria)..."
 )
 
 if student_query:
