@@ -307,18 +307,20 @@ with col2:
 st.markdown(
     """
     <div style='text-align: center; margin-top: -10px; margin-bottom: 25px;'>
-        <h1 style='color: #0f6b4f; font-family: "Helvetica Neue", Arial, sans-serif; font-weight: 800; font-size: 32px; margin-bottom: 5px;'>
-            🎓 CDOE MANUU Support Bot
+        <h2 style='color: #0f6b4f; font-family: "Helvetica Neue", Arial, sans-serif; font-weight: 700; font-size: 24px; margin-bottom: 3px; letter-spacing: 0.5px;'>
+            MAULANA AZAD NATIONAL URDU UNIVERSITY
+        </h2>
+        <h1 style='color: #2d3748; font-family: "Helvetica Neue", Arial, sans-serif; font-weight: 800; font-size: 30px; margin-top: 0; margin-bottom: 5px;'>
+            🎓 CDOE Support Bot
         </h1>
-        <p style='color: #cca43b; font-size: 18px; font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; margin-top: 0;'>
+        <p style='color: #cca43b; font-size: 16px; font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; margin-top: 0;'>
             Centre for Distance & Online Education
         </p>
-        <div style='height: 3px; width: 80px; background-color: #cca43b; margin: 15px auto; border-radius: 2px;'></div>
+        <div style='height: 3px; width: 120px; background-color: #cca43b; margin: 15px auto; border-radius: 2px;'></div>
     </div>
     """,
     unsafe_allow_html=True
 )
-
 # User Query Interaction
 st.info("💡 **Voice Search Tip:** Click inside the box below and press **Windows Key + H** to speak your question aloud!")
 
