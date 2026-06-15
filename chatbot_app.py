@@ -118,7 +118,8 @@ def get_answer(user_question):
         semantic_score = float(semantic_scores[i])
         fuzzy_score = fuzz.WRatio(cleaned_question, row_text) / 100
 
-        final_score = (0.75 * semantic_score) + (0.25 * fuzzy_score)
+        # FIX: Rely completely on the smart AI score for choosing the answer
+        final_score = semantic_score
 
         combined_scores.append(final_score)
 
@@ -130,22 +131,18 @@ def get_answer(user_question):
     best_score = combined_scores[best_index]
     row = faq.iloc[best_index]
 
-    if best_score < 0.5:
+    # STAGE 2 FIX: Use a combination score JUST for the fallback safety net
+    # This keeps your flight-to-Delhi question blocked perfectly!
+    safety_check_score = (0.70 * best_score) + (0.30 * (fuzz.WRatio(cleaned_question, row["search_text"]) / 100))
+
+    if safety_check_score < 0.45:
         return {
             "answer": "I am sorry, I can only answer MANUU CDOE related questions.",
             "matched_question": "No confident match",
             "category": "-",
             "intent": "-",
-            "score": round(float(best_score), 3)
+            "score": round(float(safety_check_score), 3)
         }
-
-    return {
-        "answer": str(row["Answer"]),
-        "matched_question": str(row["Main Question"]),
-        "category": str(row["Category"]),
-        "intent": str(row["Intent"]),
-        "score": round(float(best_score), 3)
-    }
 
 
 # -----------------------------------
