@@ -26,7 +26,7 @@ from rapidfuzz import fuzz
 
 st.set_page_config(
     page_title="CDOE MANUU Chatbot",
-    page_icon="🎓",
+    page_icon="cdoe_logo.png",  # Changing the graduation hat to your official logo file!
     layout="centered"
 )
 
