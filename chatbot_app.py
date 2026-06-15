@@ -238,7 +238,7 @@ def show_speech_button(answer_text):
 st.markdown(
     """
     <style>
-    /* Main Background: Pure white base blended with a subtle MANUU background image */
+    /* Main Background: Pure white background */
     .stApp {
         background: linear-gradient(135deg, #fbf8f0 0%, #f5eedc 100%);
     }
