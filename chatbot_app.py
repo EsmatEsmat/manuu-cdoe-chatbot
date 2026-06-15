@@ -234,65 +234,74 @@ def show_speech_button(answer_text):
 # STREAMLIT USER INTERFACE (UPGRADED)
 # -----------------------------------
 
-# Custom Happy/Professional CSS Styling
+# Custom Premium University Dashboard Styling
 st.markdown(
     """
     <style>
-    /* Main Background and Text Settings */
+    /* Main Background: Soft, warm cream to white gradient */
     .stApp {
-        background: linear-gradient(to bottom, #f4fbf7, #ffffff);
+        background: linear-gradient(135deg, #fdfbf7 0%, #ffffff 100%);
     }
     
-    /* Global Info Banner Restyling */
+    /* Center the main content area and give it structure on wide screens */
+    .block-container {
+        max-width: 800px !important;
+        padding-top: 2rem !important;
+        padding-bottom: 3rem !important;
+    }
+
+    /* Info Banner Restyling: Using soft maroon/rose tint instead of green */
     .stAlert {
-        background-color: #eafaf1 !important;
-        border-left: 5px solid #0f6b4f !important;
-        color: #0c523d !important;
-        border-radius: 10px;
+        background-color: #fdf2f2 !important;
+        border-left: 5px solid #9b1c1c !important;
+        color: #7f1d1d !important;
+        border-radius: 12px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.02);
     }
     
-    /* Input Box Focus Border styling */
+    /* Input Box: Modern, clean border that highlights in university red */
     div.stTextInput > div > div > input {
-        border-radius: 12px;
-        border: 2px solid #ced4da;
-        padding: 12px;
+        border-radius: 14px;
+        border: 2px solid #e5e7eb;
+        padding: 14px;
         font-size: 16px;
+        background-color: #ffffff;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.02);
     }
     div.stTextInput > div > div > input:focus {
-        border-color: #0f6b4f !important;
-        box-shadow: 0 0 0 0.2rem rgba(15, 107, 79, 0.25) !important;
+        border-color: #9b1c1c !important;
+        box-shadow: 0 0 0 3px rgba(155, 28, 28, 0.15) !important;
     }
     
-    /* Chat Answer Box Styling */
+    /* Chat Answer Card: Premium floating card with a rich maroon accent line */
     .answer-box {
         background-color: #ffffff;
-        padding: 22px;
-        border-radius: 16px;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-        border: 1px solid #e1e8e5;
-        border-left: 6px solid #0f6b4f;
-        margin-top: 15px;
-        margin-bottom: 15px;
+        padding: 26px;
+        border-radius: 18px;
+        box-shadow: 0 10px 25px rgba(155, 28, 28, 0.05), 0 2px 5px rgba(0,0,0,0.02);
+        border: 1px solid #f3f4f6;
+        border-left: 6px solid #9b1c1c;
+        margin-top: 20px;
+        margin-bottom: 20px;
     }
     .answer-title {
-        color: #0f6b4f;
-        font-weight: bold;
-        font-size: 18px;
-        margin-bottom: 8px;
+        color: #9b1c1c;
+        font-weight: 700;
+        font-size: 19px;
+        margin-bottom: 10px;
         display: flex;
         align-items: center;
         gap: 8px;
     }
     .answer-text {
-        font-size: 16px;
-        color: #2d3748;
-        line-height: 1.6;
+        font-size: 16.5px;
+        color: #1f2937;
+        line-height: 1.65;
     }
     </style>
     """,
     unsafe_allow_html=True
 )
-
 # Centered Logo Implementation (Foolproof Version)
 try:
     _, center_col, _ = st.columns([1, 1, 1])
