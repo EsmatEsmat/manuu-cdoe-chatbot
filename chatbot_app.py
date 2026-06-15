@@ -293,14 +293,18 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-# Header Section with Columns
-col1, col2, col3 = st.columns([1, 2, 1])
-
-with col2:
-    try:
-        st.image("cdoe_logo.png", width=180)
-    except:
-        st.write("")
+# Centered Logo Implementation
+try:
+    st.markdown(
+        """
+        <div style="display: flex; justify-content: center; align-items: center; margin-bottom: 10px;">
+            <img src="app/static/cdoe_logo.png" width="160" style="object-fit: contain;">
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+except:
+    pass
 
 # Beautiful Institutional Title Styling
 st.markdown(
