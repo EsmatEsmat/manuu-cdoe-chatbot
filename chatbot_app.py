@@ -298,7 +298,7 @@ try:
     st.markdown(
         """
         <div style="display: flex; justify-content: center; align-items: center; margin-bottom: 10px;">
-            <img src="app/static/cdoe_logo.png" width="160" style="object-fit: contain;">
+            <img st.image("cdoe_logo.png", width=160) style="object-fit: contain;">
         </div>
         """,
         unsafe_allow_html=True
