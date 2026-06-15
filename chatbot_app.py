@@ -143,7 +143,13 @@ def get_answer(user_question):
             "intent": "-",
             "score": round(float(safety_check_score), 3)
         }
-
+return {
+        "answer": row["Answer"],
+        "matched_question": row["Main Question"],
+        "category": row["Category"] if "Category" in row else "-",
+        "intent": row["Intent"] if "Intent" in row else "-",
+        "score": round(float(best_score), 3)
+    }
 
 # -----------------------------------
 # SAVE CHAT LOG
