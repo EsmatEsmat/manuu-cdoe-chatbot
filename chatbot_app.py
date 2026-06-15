@@ -1,0 +1,271 @@
+
+# -*- coding: utf-8 -*-
+"""
+Created on Sat May 23 20:04:59 2026
+
+@author: ismat
+"""
+import ssl
+# Tell Python to ignore the broken Windows certificate store entirely
+ssl.create_default_context = lambda *args, **kwargs: ssl._create_unverified_context(*args, **kwargs)
+import streamlit as st
+import streamlit.components.v1 as components
+import pandas as pd
+import re
+import os
+
+from datetime import datetime
+from sentence_transformers import SentenceTransformer
+from sklearn.metrics.pairwise import cosine_similarity
+from rapidfuzz import fuzz
+
+
+# -----------------------------------
+# PAGE SETTINGS
+# -----------------------------------
+
+st.set_page_config(
+    page_title="CDOE MANUU Chatbot",
+    page_icon="🎓",
+    layout="centered"
+)
+
+
+# -----------------------------------
+# LOAD AI MODEL
+# -----------------------------------
+
+@st.cache_resource
+def load_model():
+    return SentenceTransformer("all-MiniLM-L6-v2")
+
+
+# -----------------------------------
+# LOAD FAQ DATA
+# -----------------------------------
+
+@st.cache_data
+def load_faq():
+    faq = pd.read_csv("master_faq.csv", encoding="latin1")
+
+    def clean_text(text):
+        text = str(text).lower()
+        text = re.sub(r"[^\w\s]", " ", text)
+        text = re.sub(r"\s+", " ", text).strip()
+        return text
+
+    faq["search_text"] = (
+        faq["Main Question"].fillna("") + " " +
+        faq["Alternate Questions"].fillna("") + " " +
+        faq["Real Student Variants"].fillna("") + " " +
+        faq["Intent"].fillna("") + " " +
+        faq["Category"].fillna("") + " " +
+        faq["Programme Group"].fillna("") + " " +
+        faq["Programme Detail"].fillna("")
+    )
+
+    faq["search_text"] = faq["search_text"].apply(clean_text)
+
+    return faq
+
+
+# -----------------------------------
+# CLEAN TEXT
+# -----------------------------------
+
+def clean_text(text):
+    text = str(text).lower()
+    text = re.sub(r"[^\w\s]", " ", text)
+    text = re.sub(r"\s+", " ", text).strip()
+    return text
+
+
+# -----------------------------------
+# LOAD MODEL + DATA
+# -----------------------------------
+
+model = load_model()
+faq = load_faq()
+
+faq_embeddings = model.encode(
+    faq["search_text"].tolist(),
+    convert_to_tensor=False
+)
+
+
+# -----------------------------------
+# GET BEST ANSWER
+# -----------------------------------
+
+def get_answer(user_question):
+
+    cleaned_question = clean_text(user_question)
+
+    question_embedding = model.encode(
+        [cleaned_question],
+        convert_to_tensor=False
+    )
+
+    semantic_scores = cosine_similarity(
+        question_embedding,
+        faq_embeddings
+    )[0]
+
+    combined_scores = []
+
+    for i, row_text in enumerate(faq["search_text"]):
+
+        semantic_score = float(semantic_scores[i])
+        fuzzy_score = fuzz.WRatio(cleaned_question, row_text) / 100
+
+        final_score = (0.75 * semantic_score) + (0.25 * fuzzy_score)
+
+        combined_scores.append(final_score)
+
+    best_index = max(
+        range(len(combined_scores)),
+        key=combined_scores.__getitem__
+    )
+
+    best_score = combined_scores[best_index]
+    row = faq.iloc[best_index]
+
+    if best_score < 0.42:
+        return {
+            "answer": "I could not confidently find an answer. Please contact the concerned CDOE support section.",
+            "matched_question": "No confident match",
+            "category": "-",
+            "intent": "-",
+            "score": round(float(best_score), 3)
+        }
+
+    return {
+        "answer": str(row["Answer"]),
+        "matched_question": str(row["Main Question"]),
+        "category": str(row["Category"]),
+        "intent": str(row["Intent"]),
+        "score": round(float(best_score), 3)
+    }
+
+
+# -----------------------------------
+# SAVE CHAT LOG
+# -----------------------------------
+
+def save_log(user_query, result):
+
+    log_file = "chat_logs.csv"
+
+    log_data = {
+        "Timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        "User Query": user_query,
+        "Bot Answer": result["answer"],
+        "Matched Question": result["matched_question"],
+        "Category": result["category"],
+        "Intent": result["intent"],
+        "Confidence Score": result["score"]
+    }
+
+    log_df = pd.DataFrame([log_data])
+
+    if os.path.exists(log_file):
+        log_df.to_csv(
+            log_file,
+            mode="a",
+            header=False,
+            index=False,
+            encoding="utf-8-sig"
+        )
+    else:
+        log_df.to_csv(
+            log_file,
+            index=False,
+            encoding="utf-8-sig"
+        )
+
+
+# -----------------------------------
+# SPEECH BUTTON
+# -----------------------------------
+
+def show_speech_button(answer_text):
+
+    safe_answer = (
+        answer_text
+        .replace("\\", "\\\\")
+        .replace("'", "\\'")
+        .replace('"', '\\"')
+        .replace("\n", " ")
+    )
+
+    components.html(
+        f"""
+        <button onclick="speakAnswer()" style="
+            background-color:#0f6b4f;
+            color:white;
+            border:none;
+            padding:10px 16px;
+            border-radius:8px;
+            cursor:pointer;
+            font-size:16px;">
+            🔊 Listen to Answer
+        </button>
+
+        <script>
+        function speakAnswer() {{
+            window.speechSynthesis.cancel();
+            var msg = new SpeechSynthesisUtterance('{safe_answer}');
+            msg.lang = 'en-IN';
+            msg.rate = 0.9;
+            msg.pitch = 1;
+            window.speechSynthesis.speak(msg);
+        }}
+        </script>
+        """,
+        height=70
+    )
+
+
+# -----------------------------------
+# STREAMLIT USER INTERFACE
+# -----------------------------------
+
+col1, col2, col3 = st.columns([1,2,1])
+
+with col2:
+    st.image("cdoe_logo.png", width=180)
+
+st.markdown(
+    "<h1 style='text-align:center;'>CDOE MANUU Student Support Chatbot</h1>",
+    unsafe_allow_html=True
+)
+
+st.markdown(
+    "<p style='text-align:center;'>Centre for Distance and Online Education</p>",
+    unsafe_allow_html=True
+)
+
+st.info("Voice search tip: click inside the question box and press Windows + H to speak your query.")
+
+student_query = st.text_input(
+    "Ask your question:",
+    placeholder="Example: hallticket nai aarha miya"
+)
+
+if student_query:
+
+    result = get_answer(student_query)
+
+    save_log(student_query, result)
+
+    st.markdown("### Answer")
+
+    st.success(result["answer"])
+
+    show_speech_button(result["answer"])
+
+    with st.expander("Match Details"):
+        st.write("Matched Question:", result["matched_question"])
+        st.write("Category:", result["category"])
+        st.write("Intent:", result["intent"])
+        st.write("Confidence Score:", result["score"])
