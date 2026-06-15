@@ -249,7 +249,7 @@ st.info("Voice search tip: click inside the question box and press Windows + H t
 
 student_query = st.text_input(
     "Ask your question:",
-    placeholder="Example: hallticket nai aarha miya"
+    placeholder="Example: mba ki eligibility kya hai"
 )
 
 if student_query:
