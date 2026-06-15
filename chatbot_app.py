@@ -238,7 +238,7 @@ def show_speech_button(answer_text):
 st.markdown(
     """
     <style>
-    /* Main Background: True warm vintage paper / golden ivory feel */
+    /* Main Background: Pure white base blended with a subtle MANUU background image */
     .stApp {
         background: linear-gradient(135deg, #fbf8f0 0%, #f5eedc 100%);
     }
