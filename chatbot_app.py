@@ -123,11 +123,4 @@ def get_answer(user_question):
     semantic_scores = cosine_similarity(question_embedding, faq_embeddings)[0]
 
     combined_scores = []
-    for i, row_text in enumerate(faq["search_text"]):
-        combined_scores.append(float(semantic_scores[i]))
-
-    best_index = max(range(len(combined_scores)), key=combined_scores.__getitem__)
-    best_score = combined_scores[best_index]
-    row = faq.iloc[best_index]
-
-    safety_check_score = (0.70 * best_score) + (
+    for i, row_text in enumerate(faq
