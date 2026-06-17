@@ -193,7 +193,6 @@ def show_speech_button(answer_text):
 # BRIGHT & VIBRANT VISUAL ENGINE
 # -----------------------------------
 
-# Raw HTML Injector to isolate and secure pure CSS parsing away from Python formatting errors
 st.markdown(
     """
     <style>
@@ -210,17 +209,15 @@ st.markdown(
         padding-bottom: 3rem !important;
     }
     
-    /* Absolute Font Hierarchy Fix */
     body, p, span, div, label {
         font-family: 'Helvetica Neue', Arial, sans-serif;
     }
     
-    /* Forcing Jameel Noori Nastaleeq explicitly into text blocks and text inputs */
+    /* Forced Typographic Fallback Pipeline across all interface hooks */
     .urdu-text, [lang="ur"], .stAlert p, .custom-label span, div[data-baseweb="input"] input {
         font-family: 'Jameel Noori Nastaleeq', 'Noto Nastaliq Urdu', 'Urdu Typesetting', 'Nastaliq', sans-serif !important;
     }
     
-    /* Direct targeting of input box to render typed Urdu perfectly */
     div[data-baseweb="input"] input {
         font-size: 22px !important;
         line-height: 1.8 !important;
@@ -289,20 +286,52 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-# Apply runtime UI dimension compression layout parameters if popup preview is selected
+# -----------------------------------
+# POPUP FLOATING LIVE PREVIEW ENGINE
+# -----------------------------------
 if ui_mode == "Floating Website Widget Preview":
     st.markdown(
         """
         <style>
+        /* Re-styles the container to behave like a live floating window widget on a website */
         .block-container {
-            max-width: 430px !important;
-            background: rgba(255, 255, 255, 0.15) !important;
-            border-radius: 24px !important;
-            padding: 24px !important;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.4) !important;
-            margin: 30px auto !important;
-            border: 2px solid rgba(255,255,255,0.25);
-            backdrop-filter: blur(15px);
+            max-width: 410px !important;
+            height: 82vh !important;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%) !important;
+            border-radius: 20px !important;
+            padding: 20px !important;
+            box-shadow: 0 12px 40px rgba(0,0,0,0.6) !important;
+            border: 2px solid rgba(255,255,255,0.2);
+            backdrop-filter: blur(20px);
+            position: fixed !important;
+            bottom: 110px !important;
+            right: 30px !important;
+            z-index: 99999;
+            overflow-y: auto !important;
+        }
+        
+        /* Simulates the floating website popup launcher icon button at bottom right */
+        .stApp::after {
+            content: "💬";
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 65px;
+            height: 65px;
+            background: #00e676;
+            border-radius: 50%;
+            box-shadow: 0 4px 15px rgba(0,230,118,0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            cursor: pointer;
+            z-index: 100000;
+            animation: bubblePulse 2s infinite;
+        }
+        @keyframes bubblePulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.08); }
         }
         </style>
         """,
@@ -317,40 +346,43 @@ if ui_mode == "Floating Website Widget Preview":
 st.markdown(
 """
 <div style="display: flex; justify-content: center; align-items: center; width: 100%; margin-bottom: 12px;">
-    <img src="https://raw.githubusercontent.com/your-username/your-repo/main/manuu_logo.png" 
-         onerror="this.src='https://upload.wikimedia.org/wikipedia/en/3/3b/Maulana_Azad_National_Urdu_University_Logo.png';" 
-         style="width: 135px; height: auto;" />
+    <!-- Active high-availability stable vector CDN reference configuration link -->
+    <img src="https://images.seeklogo.com/logo-png/22/1/maulana-azad-national-urdu-university-logo-png_seeklogo-226045.png" 
+         onerror="this.src='manuu_logo.png';" 
+         style="width: 120px; height: auto;" />
 </div>
 
-<div style='text-align: center; margin-top: 5px; margin-bottom: 25px;'>
-<h2 style='color: #ffffff !important; font-family: "Helvetica Neue", Arial, sans-serif; font-weight: 700; font-size: 22px; margin-bottom: 6px; letter-spacing: 0.5px;'>
+<div style='text-align: center; margin-top: 5px; margin-bottom: 20px;'>
+<!-- Isolated Inline Element Color-Locks Forcing White Output -->
+<div style='color: #ffffff !important; font-family: "Helvetica Neue", Arial, sans-serif; font-weight: 700; font-size: 19px; margin-bottom: 8px; letter-spacing: 0.5px; display: block; line-height: 1.3;'>
 MAULANA AZAD NATIONAL URDU UNIVERSITY
-</h2>
+</div>
 
-<p style='color: #ffffff !important; font-family: "Helvetica Neue", Arial, sans-serif; font-size: 18px; font-weight: 500; letter-spacing: 0.5px; margin-top: 0; margin-bottom: 10px;'>
-<span style='font-size: 26px; font-weight: 800;'>C</span>entre for 
-<span style='font-size: 26px; font-weight: 800;'>D</span>istance and 
-<span style='font-size: 26px; font-weight: 800;'>O</span>nline 
-<span style='font-size: 26px; font-weight: 800;'>E</span>ducation
-</p>
+<div style='color: #ffffff !important; font-family: "Helvetica Neue", Arial, sans-serif; font-size: 15px; font-weight: 500; letter-spacing: 0.5px; margin-top: 0; margin-bottom: 10px; display: block; line-height: 1.4;'>
+<span style='font-size: 23px; font-weight: 800; color: #ffffff !important;'>C</span>entre for 
+<span style='font-size: 23px; font-weight: 800; color: #ffffff !important;'>D</span>istance and 
+<span style='font-size: 23px; font-weight: 800; color: #ffffff !important;'>O</span>nline 
+<span style='font-size: 23px; font-weight: 800; color: #ffffff !important;'>E</span>ducation
+</div>
 
+<!-- MAVIN VISUAL KINETIC ORB INTERFACE -->
 <div class="avatar-container">
     <div class="core-glow-orb"></div>
     <div class="satellite-orbit-ring"></div>
 </div>
 
-<div style="margin-bottom: 10px;">
-<div style="font-family: 'Jameel Noori Nastaleeq', 'Noto Nastaliq Urdu', sans-serif !important; font-weight: 500; font-size: 58px; color: #00e676; line-height: 1.1; direction: rtl;" lang="ur">
+<div style="margin-bottom: 5px;">
+<div style="font-family: 'Jameel Noori Nastaleeq', 'Noto Nastaliq Urdu', sans-serif !important; font-weight: 500; font-size: 52px; color: #00e676; line-height: 1.1; direction: rtl;" lang="ur">
 معاوِن
 </div>
-<div style='color: #ffffff !important; font-family: "Helvetica Neue", Arial, sans-serif; font-weight: 900; font-size: 46px; margin-top: -5px; margin-bottom: 2px; letter-spacing: 1px;'>
+<div style='color: #ffffff !important; font-family: "Helvetica Neue", Arial, sans-serif; font-weight: 900; font-size: 40px; margin-top: -5px; margin-bottom: 2px; letter-spacing: 1px;'>
 MAVIN
 </div>
 </div>
-<p style='color: rgba(255,255,255,0.95) !important; font-size: 16px; margin-top: 2px; font-weight: 500; letter-spacing: 0.5px;'>
+<div style='color: rgba(255,255,255,0.95) !important; font-size: 14px; margin-top: 2px; font-weight: 500; letter-spacing: 0.5px;'>
 (MANUU Virtual Interface)
-</p>
-<div style='height: 3px; width: 160px; background: linear-gradient(90deg, #ffffff, #00e676); margin: 15px auto; border-radius: 2px;'></div>
+</div>
+<div style='height: 3px; width: 140px; background: linear-gradient(90deg, #ffffff, #00e676); margin: 12px auto; border-radius: 2px;'></div>
 </div>
 """,
     unsafe_allow_html=True
@@ -358,8 +390,8 @@ MAVIN
 
 st.markdown(
     """
-    <div class="stAlert" style="padding: 15px; margin-bottom: 20px;">
-        <span style="color:#ffffff;">💡</span> <strong style="color:#ffffff;">Language Support:</strong> <span style="color:#ffffff;">You can type your questions comfortably in English or</span> <span class="urdu-text" style="font-family:'Jameel Noori Nastaleeq', 'Noto Nastaliq Urdu', sans-serif !important; font-size:24px; color:#00e676; vertical-align:middle;">Urdu (اردو)</span>
+    <div class="stAlert" style="padding: 12px; margin-bottom: 15px;">
+        <span style="color:#ffffff;">💡</span> <strong style="color:#ffffff;">Language Support:</strong> <span style="color:#ffffff;">You can type your questions comfortably in English or</span> <span class="urdu-text" style="font-family:'Jameel Noori Nastaleeq', 'Noto Nastaliq Urdu', sans-serif !important; font-size:22px; color:#00e676; vertical-align:middle;">Urdu (اردو)</span>
     </div>
     """, 
     unsafe_allow_html=True
@@ -375,9 +407,9 @@ if "show_analytics" not in st.session_state:
 
 st.markdown(
     """
-    <label class="custom-label" style="color: #ffffff !important; font-size: 16px; font-weight: 500; margin-bottom: 8px; display: block;">
+    <label class="custom-label" style="color: #ffffff !important; font-size: 15px; font-weight: 500; margin-bottom: 6px; display: block;">
         How can MAVIN assist you today? / 
-        <span style="font-family:'Jameel Noori Nastaleeq', 'Noto Nastaliq Urdu', 'Urdu Typesetting', sans-serif !important; font-size:26px; color:#00e676; vertical-align: middle; direction: rtl;">
+        <span style="font-family:'Jameel Noori Nastaleeq', 'Noto Nastaliq Urdu', 'Urdu Typesetting', sans-serif !important; font-size:24px; color:#00e676; vertical-align: middle; direction: rtl;">
             میں آپ کی کیا مدد کر سکتا ہوں؟
         </span>
     </label>
