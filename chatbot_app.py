@@ -5,7 +5,6 @@ Created on Sat May 23 20:04:59 2026
 @author: ismat
 """
 import ssl
-# Tell Python to ignore the broken Windows certificate store entirely
 ssl.create_default_context = lambda *args, **kwargs: ssl._create_unverified_context(*args, **kwargs)
 import streamlit as st
 import streamlit.components.v1 as components
@@ -17,8 +16,6 @@ from datetime import datetime
 from sentence_transformers import SentenceTransformer
 from sklearn.metrics.pairwise import cosine_similarity
 from rapidfuzz import fuzz
-
-# LIVE TRANSLATION ENGINE INTEGRATION
 from deep_translator import GoogleTranslator
 
 
@@ -34,17 +31,22 @@ st.set_page_config(
 
 
 # -----------------------------------
-# LOAD AI MODEL
+# SIDEBAR MODULAR PREVIEW TRIGGER
+# -----------------------------------
+st.sidebar.markdown("### 🖥️ Display Configuration")
+ui_mode = st.sidebar.radio(
+    "Select Application Interface Canvas Mode:",
+    ["Full Screen Web App", "Floating Website Widget Preview"]
+)
+
+
+# -----------------------------------
+# LOAD MODEL & FAQ DATA
 # -----------------------------------
 
 @st.cache_resource
 def load_model():
     return SentenceTransformer("all-MiniLM-L6-v2")
-
-
-# -----------------------------------
-# LOAD FAQ DATA
-# -----------------------------------
 
 @st.cache_data
 def load_faq():
@@ -69,11 +71,6 @@ def load_faq():
     faq["search_text"] = faq["search_text"].apply(clean_text)
     return faq
 
-
-# -----------------------------------
-# CLEAN TEXT UTILITIES
-# -----------------------------------
-
 def clean_text(text):
     text = str(text).lower()
     text = re.sub(r"[^\w\s]", " ", text)
@@ -82,11 +79,6 @@ def clean_text(text):
 
 def is_urdu(text):
     return bool(re.search(r'[\u0600-\u06FF]', text))
-
-
-# -----------------------------------
-# INITIALIZE MODEL + DATA
-# -----------------------------------
 
 model = load_model()
 faq = load_faq()
@@ -98,7 +90,7 @@ faq_embeddings = model.encode(
 
 
 # -----------------------------------
-# DETECT SHORT KEYWORD DIRECT MATCHES
+# CORE BACKEND MATCHING ENGINE
 # -----------------------------------
 
 def handle_keyword_overrides(cleaned_question):
@@ -121,38 +113,20 @@ def handle_keyword_overrides(cleaned_question):
                     }
     return None
 
-
-# -----------------------------------
-# GET BEST ANSWER
-# -----------------------------------
-
 def get_answer(user_question):
     cleaned_question = clean_text(user_question)
-
     direct_match = handle_keyword_overrides(cleaned_question)
     if direct_match:
         return direct_match
 
-    question_embedding = model.encode(
-        [cleaned_question],
-        convert_to_tensor=False
-    )
-
-    semantic_scores = cosine_similarity(
-        question_embedding,
-        faq_embeddings
-    )[0]
+    question_embedding = model.encode([cleaned_question], convert_to_tensor=False)
+    semantic_scores = cosine_similarity(question_embedding, faq_embeddings)[0]
 
     combined_scores = []
     for i, row_text in enumerate(faq["search_text"]):
-        semantic_score = float(semantic_scores[i])
-        combined_scores.append(semantic_scores[i])
+        combined_scores.append(float(semantic_scores[i]))
 
-    best_index = max(
-        range(len(combined_scores)),
-        key=combined_scores.__getitem__
-    )
-
+    best_index = max(range(len(combined_scores)), key=combined_scores.__getitem__)
     best_score = combined_scores[best_index]
     row = faq.iloc[best_index]
 
@@ -175,11 +149,6 @@ def get_answer(user_question):
         "score": round(float(best_score), 3)
     }
 
-
-# -----------------------------------
-# SAVE CHAT LOG
-# -----------------------------------
-
 def save_log(user_query, result, original_urdu=""):
     log_file = "chat_logs.csv"
     log_data = {
@@ -191,194 +160,151 @@ def save_log(user_query, result, original_urdu=""):
         "Intent": result["intent"],
         "Confidence Score": result["score"]
     }
-
     log_df = pd.DataFrame([log_data])
     if os.path.exists(log_file):
         log_df.to_csv(log_file, mode="a", header=False, index=False, encoding="utf-8-sig")
     else:
         log_df.to_csv(log_file, index=False, encoding="utf-8-sig")
 
-
-# -----------------------------------
-# SPEECH ENGINE INTERFACE
-# -----------------------------------
-
 def show_speech_button(answer_text):
-    safe_answer = (
-        answer_text
-        .replace("\\", "\\\\")
-        .replace("'", "\\'")
-        .replace('"', '\\"')
-        .replace("\n", " ")
-    )
-
+    safe_answer = answer_text.replace("\\", "\\\\").replace("'", "\\'").replace('"', '\\"').replace("\n", " ")
     components.html(
         f"""
         <div style="margin:0; padding:0; background:transparent; overflow:hidden;">
             <button onclick="speakAnswer()" style="
-                background-color:#00c853;
-                color:white;
-                border:none;
-                padding:10px 16px;
-                border-radius:8px;
-                cursor:pointer;
-                font-weight:600;
-                font-size:15px;
-                box-shadow: 0 2px 5px rgba(0,0,0,0.2);">
+                background-color:#00c853; color:white; border:none; padding:10px 16px;
+                border-radius:8px; cursor:pointer; font-weight:600; font-size:15px;">
                 🔊 Listen to Answer / جواب سنیں
             </button>
         </div>
-
         <script>
         function speakAnswer() {{
             window.speechSynthesis.cancel();
             var msg = new SpeechSynthesisUtterance('{safe_answer}');
-            msg.lang = 'en-IN';
-            msg.rate = 0.9;
+            msg.lang = 'en-IN'; msg.rate = 0.9;
             window.speechSynthesis.speak(msg);
         }}
         </script>
-        """,
-        height=50
+        """, height=50
     )
 
 
 # -----------------------------------
-# STREAMLIT USER INTERFACE FRAMEWORK
+# GLOBAL VISUAL STYLE ENGINE
 # -----------------------------------
 
-st.markdown(
-    """
-    <style>
-    /* Sky Blue to Bright Kelly Green Ambient Gradient Background */
-    .stApp {
-        background: linear-gradient(135deg, #1a73e8 0%, #0d47a1 50%, #00c853 100%) !important;
-    }
-    .stMarkdown, p, h1, h2, h3, h4, span, label, li {
-        color: #ffffff !important;
-    }
+widget_css = ""
+if ui_mode == "Floating Website Widget Preview":
+    widget_css = """
     .block-container {
+        max-width: 420px !important;
+        background: #ffffff !important;
+        border-radius: 20px !important;
+        padding: 20px !important;
+        box-shadow: 0 12px 40px rgba(0,0,0,0.5) !important;
+        margin: 40px auto !important;
+        border: 4px solid #1a73e8;
+    }
+    .stApp {
+        background: rgba(0, 0, 0, 0.4) !important;
+    }
+    p, h2, h1, span, label { color: #1a252f !important; }
+    """
+
+st.markdown(
+    f"""
+    <style>
+    @import url('https://fonts.cdnfonts.com/css/jameel-noori-nastaleeq');
+    
+    .stApp {{
+        background: linear-gradient(135deg, #1a73e8 0%, #0d47a1 50%, #00c853 100%) !important;
+    }}
+    .block-container {{
         max-width: 750px !important;
         padding-top: 1.5rem !important;
         padding-bottom: 3rem !important;
-    }
+    }}
     
-    @import url('https://fonts.cdnfonts.com/css/jameel-noori-nastaleeq');
-    
-    body, *, .stAlert, div, input, p, span, label {
+    /* Strict Typography Pipeline forcing Jameel Noori Nastaleeq dynamically everywhere */
+    body, *, p, span, div, label {{
         font-family: 'Helvetica Neue', Arial, sans-serif;
-    }
+    }}
     
-    [lang="ur"], .urdu-text, .stAlert p, div.stTextInput label, div.stTextInput input::placeholder {
+    .urdu-global, [lang="ur"], .stAlert p, .custom-label, .custom-label span {{
         font-family: 'Jameel Noori Nastaleeq', 'Urdu Typesetting', 'Nastaliq', sans-serif !important;
-    }
+    }}
     
-    .stAlert {
+    .stAlert {{
         background-color: rgba(255, 255, 255, 0.12) !important;
         border-left: 5px solid #00c853 !important;
-        color: #ffffff !important;
         border-radius: 14px;
-        backdrop-filter: blur(8px);
-    }
-    div.stTextInput > div > div > input {
-        border-radius: 14px;
-        border: 2px solid #1a73e8;
-        padding: 14px;
-        font-size: 16px;
-        background-color: #ffffff !important;
-        color: #1a252f !important;
-    }
-    div.stTextInput > div > div > input:focus {
-        border-color: #00c853 !important;
-    }
-    .answer-box {
-        background-color: #ffffff !important;
-        padding: 26px;
-        border-radius: 18px;
-        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
-        border-left: 6px solid #00c853;
-        margin-top: 20px;
-        margin-bottom: 20px;
-    }
-    .answer-title {
-        color: #0d47a1 !important;
-        font-weight: 700;
-        font-size: 19px;
-        margin-bottom: 10px;
-    }
-    .answer-text {
-        font-size: 16px;
-        color: #1f2937 !important;
-        line-height: 1.65;
-    }
-    .stExpander {
-        background-color: rgba(255, 255, 255, 0.05) !important;
-        border-radius: 10px;
-    }
+    }}
+    div.stTextInput > div > div > input {{
+        border-radius: 14px; border: 2px solid #1a73e8; padding: 14px; font-size: 16px;
+    }}
+    .answer-box {{
+        background-color: #ffffff !important; padding: 26px; border-radius: 18px;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3); border-left: 6px solid #00c853; margin: 20px 0;
+    }}
+    .answer-title {{ color: #0d47a1 !important; font-weight: 700; font-size: 19px; }}
+    .answer-text {{ font-size: 16px; color: #1f2937 !important; line-height: 1.65; }}
     
-    /* ANIMATION KEYFRAMES FOR THE MAVIN ROBOT ORB FIGURE */
-    .avatar-container {
-        position: relative;
-        width: 80px;
-        height: 80px;
-        margin: 20px auto 10px auto;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-    .core-glow-orb {
-        width: 34px;
-        height: 34px;
-        background: radial-gradient(circle, #ffffff 0%, #00c853 80%);
-        border-radius: 50%;
-        box-shadow: 0 0 20px #00c853, 0 0 40px #1a73e8;
-        animation: orbPulse 2.5s infinite ease-in-out;
-    }
-    .satellite-orbit-ring {
-        position: absolute;
-        width: 70px;
-        height: 22px;
-        border: 3px solid rgba(255, 255, 255, 0.85);
-        border-radius: 50%;
-        transform: rotateX(65deg) rotateY(15deg);
-        animation: ringOrbitSpin 4s infinite linear;
-        box-shadow: 0 0 8px #ffffff;
-    }
-    @keyframes orbPulse {
-        0%, 100% { transform: scale(1); box-shadow: 0 0 20px #00c853, 0 0 35px #1a73e8; }
-        50% { transform: scale(1.15); box-shadow: 0 0 30px #ffffff, 0 0 50px #00c853; }
-    }
-    @keyframes ringOrbitSpin {
-        0% { transform: rotateX(65deg) rotateY(15deg) rotateZ(0deg); }
-        100% { transform: rotateX(65deg) rotateY(15deg) rotateZ(360deg); }
-    }
+    /* DESIGN VECTORS FOR THE KINETIC STICK FIGURE ROBOT (MAVIN-BOT) */
+    .robot-canvas {{
+        width: 80px; height: 90px; margin: 15px auto; position: relative;
+        animation: robotFloat 3s infinite ease-in-out;
+    }}
+    .robot-head {{
+        width: 32px; height: 26px; background: #ffffff; border-radius: 12px;
+        margin: 0 auto; position: relative; box-shadow: 0 0 15px #00c853;
+        border: 2px solid #0d47a1;
+    }}
+    .robot-visor {{
+        width: 20px; height: 6px; background: #00c853; border-radius: 4px;
+        position: absolute; top: 9px; left: 6px; box-shadow: 0 0 8px #00c853;
+    }}
+    .robot-neck {{
+        width: 6px; height: 8px; background: #1a73e8; margin: -2px auto 0 auto;
+    }}
+    .robot-torso {{
+        width: 44px; height: 34px; background: rgba(255,255,255,0.9);
+        border-radius: 8px; margin: 0 auto; border: 2px solid #1a73e8;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.2); position: relative;
+    }}
+    .robot-core {{
+        width: 12px; height: 12px; background: #00c853; border-radius: 50%;
+        position: absolute; top: 10px; left: 16px; animation: coreBlink 1.5s infinite;
+    }}
+    @keyframes robotFloat {{
+        0%, 100% {{ transform: translateY(0); }}
+        50% {{ transform: translateY(-8px); }}
+    }}
+    @keyframes coreBlink {{
+        0%, 100% {{ opacity: 0.4; box-shadow: none; }}
+        50% {{ opacity: 1; box-shadow: 0 0 8px #00c853; }}
+    }}
     
-    /* Subtle breathing title animation framework */
-    @keyframes titleGlowPulse {
-        0%, 100% { text-shadow: 0 0 10px rgba(0,200,83,0.2); transform: scale(1); }
-        50% { text-shadow: 0 0 25px rgba(0,200,83,0.7); transform: scale(1.01); }
-    }
-    .animated-title {
-        display: inline-block;
-        animation: titleGlowPulse 4s infinite ease-in-out;
-    }
+    {widget_css}
     </style>
     """,
     unsafe_allow_html=True
 )
 
-# App branding Header Row containing the official MANUU Crest
-col1, col2, col3 = st.columns([1, 1.2, 1])
-with col2:
-    try:
-        st.image("manuu_logo.png", width=140)
-    except:
-        pass
+
+# -----------------------------------
+# GEOMETRICALLY CENTERED BRANDING HEADER
+# -----------------------------------
 
 st.markdown(
 """
-<div style='text-align: center; margin-top: 15px; margin-bottom: 25px;'>
-<h2 style='color: #ffffff; font-family: "Helvetica Neue", Arial, sans-serif; font-weight: 600; font-size: 21px; margin-bottom: 6px; letter-spacing: 0.5px;'>
+<div style="display: flex; justify-content: center; align-items: center; width: 100%; margin-bottom: 10px;">
+    <img src="https://raw.githubusercontent.com/your-username/your-repo/main/manuu_logo.png" 
+         onerror="this.src='https://upload.wikimedia.org/wikipedia/en/3/3b/Maulana_Azad_National_Urdu_University_Logo.png';" 
+         style="width: 130px; height: auto;" />
+</div>
+
+<div style='text-align: center; margin-top: 5px; margin-bottom: 25px;'>
+<h2 style='font-family: "Helvetica Neue", Arial, sans-serif; font-weight: 600; font-size: 21px; margin-bottom: 6px; letter-spacing: 0.5px;'>
 MAULANA AZAD NATIONAL URDU UNIVERSITY
 </h2>
 <p style='color: #f1c40f; font-size: 19px; font-weight: 500; letter-spacing: 0.5px; margin-top: 0; margin-bottom: 10px;'>
@@ -388,20 +314,21 @@ MAULANA AZAD NATIONAL URDU UNIVERSITY
 <span style='font-size: 26px; font-weight: 800;'>E</span>ducation
 </p>
 
-<div class="avatar-container">
-    <div class="core-glow-orb"></div>
-    <div class="satellite-orbit-ring"></div>
+<div class="robot-canvas">
+    <div class="robot-head"><div class="robot-visor"></div></div>
+    <div class="robot-neck"></div>
+    <div class="robot-torso"><div class="robot-core"></div></div>
 </div>
 
-<div class="animated-title" style="margin-bottom: 10px;">
+<div style="margin-bottom: 10px;">
 <div style="font-family: 'Jameel Noori Nastaleeq', 'Urdu Typesetting', sans-serif !important; font-weight: 500; font-size: 56px; color: #00c853; line-height: 1.1; direction: rtl;" lang="ur">
 معاوِن
 </div>
-<div style='color: #ffffff; font-family: "Helvetica Neue", Arial, sans-serif; font-weight: 900; font-size: 44px; margin-top: -5px; margin-bottom: 2px; letter-spacing: 1px;'>
+<div style='font-family: "Helvetica Neue", Arial, sans-serif; font-weight: 900; font-size: 44px; margin-top: -5px; margin-bottom: 2px; letter-spacing: 1px;'>
 MAVIN
 </div>
 </div>
-<p style='color: rgba(255,255,255,0.9); font-size: 16px; margin-top: 2px; font-weight: 500; letter-spacing: 0.5px;'>
+<p style='font-size: 16px; margin-top: 2px; font-weight: 500; letter-spacing: 0.5px; opacity: 0.9;'>
 (MANUU Virtual Interface)
 </p>
 <div style='height: 3px; width: 160px; background: linear-gradient(90deg, #f1c40f, #00c853); margin: 15px auto; border-radius: 2px;'></div>
@@ -410,11 +337,10 @@ MAVIN
     unsafe_allow_html=True
 )
 
-# Language support notification banner with the exclamation mark cleanly stripped
 st.markdown(
     """
     <div class="stAlert" style="padding: 15px; margin-bottom: 20px;">
-        <span style="color:#f1c40f;">💡</span> <strong>Language Support:</strong> You can type your questions comfortably in English or <span style="font-family:'Jameel Noori Nastaleeq', sans-serif; font-size:20px; vertical-align:middle; color:#00c853;">Urdu (اردو)</span>
+        <span style="color:#f1c40f;">💡</span> <strong>Language Support:</strong> You can type your questions comfortably in English or <span class="urdu-text" style="font-family:'Jameel Noori Nastaleeq', sans-serif !important; font-size:22px; color:#00c853; vertical-align:middle;">اردو (اردو)</span>
     </div>
     """, 
     unsafe_allow_html=True
@@ -423,8 +349,28 @@ st.markdown(
 if "show_analytics" not in st.session_state:
     st.session_state.show_analytics = False
 
-st.markdown('<label style="color: white; font-size: 16px; font-weight: 500; margin-bottom: 8px; display: block;">How can MAVIN assist you today? / <span style="font-family:\'Jameel Noori Nastaleeq\', sans-serif; font-size:22px; color:#00c853; vertical-align: middle;">میں آپ کی کیا مدد کر سکتا ہوں؟</span></label>', unsafe_allow_html=True)
+
+# -----------------------------------
+# HARD-FORCED URDU INTERFACE LABELS
+# -----------------------------------
+
+st.markdown(
+    """
+    <label class="custom-label" style="font-size: 16px; font-weight: 500; margin-bottom: 8px; display: block;">
+        How can MAVIN assist you today? / 
+        <span style="font-family:'Jameel Noori Nastaleeq', 'Urdu Typesetting', sans-serif !important; font-size:25px; color:#00c853; vertical-align: middle; direction: rtl;">
+            میں آپ کی کیا مدد کر سکتا ہوں؟
+        </span>
+    </label>
+    """, 
+    unsafe_allow_html=True
+)
 student_query = st.text_input("", placeholder="Type here...", label_visibility="collapsed")
+
+
+# -----------------------------------
+# EXECUTION CONTEXT TRACKING
+# -----------------------------------
 
 if student_query:
     if student_query.strip() == "manuuadmin2026":
