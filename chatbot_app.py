@@ -379,6 +379,7 @@ st.markdown(
 
 <div style='text-align: center; margin-top: 5px; margin-bottom: 20px;'>
 
+<!-- INLINE COLOR ENGINE: Forced to bypass parent theme variables directly -->
 <div style='color: #ffffff !important; font-family: "Helvetica Neue", Arial, sans-serif; font-weight: 700; font-size: 19px; margin-bottom: 8px; letter-spacing: 0.5px; line-height: 1.3;'>
     <span style="color: #ffffff !important;">MAULANA AZAD NATIONAL URDU UNIVERSITY</span>
 </div>
@@ -390,4 +391,99 @@ st.markdown(
     <span style='font-size: 23px; font-weight: 800; color: #ffffff !important;'>E</span><span style="color: #ffffff !important;">ducation</span>
 </div>
 
+<!-- MAVIN VISUAL KINETIC ORB INTERFACE -->
 <div class="avatar-container">
+    <div class="core-glow-orb"></div>
+    <div class="satellite-orbit-ring"></div>
+</div>
+
+<div style="margin-bottom: 5px;">
+<div style="font-family: 'Jameel Noori Nastaleeq', 'Noto Nastaliq Urdu', sans-serif !important; font-weight: 500; font-size: 52px; color: #00e676; line-height: 1.1; direction: rtl;" lang="ur">
+معاوِن
+</div>
+<div style='color: #ffffff !important; font-family: "Helvetica Neue", Arial, sans-serif; font-weight: 900; font-size: 40px; margin-top: -5px; margin-bottom: 2px; letter-spacing: 1px;'>
+MAVIN
+</div>
+</div>
+<div style='color: rgba(255,255,255,0.95) !important; font-size: 14px; margin-top: 2px; font-weight: 500; letter-spacing: 0.5px;'>
+(MANUU Virtual Interface)
+</div>
+<div style='height: 3px; width: 140px; background: linear-gradient(90deg, #ffffff, #00e676); margin: 12px auto; border-radius: 2px;'></div>
+</div>
+""",
+    unsafe_allow_html=True
+)
+
+st.markdown(
+    """
+    <div class="stAlert" style="padding: 12px; margin-bottom: 15px;">
+        <span style="color:#ffffff;">💡</span> <strong style="color:#ffffff;">Language Support:</strong> <span style="color:#ffffff;">You can type your questions comfortably in English or</span> <span class="urdu-text" style="font-family:'Jameel Noori Nastaleeq', 'Noto Nastaliq Urdu', sans-serif !important; font-size:22px; color:#00e676; vertical-align:middle;">Urdu (اردو)</span>
+    </div>
+    """, 
+    unsafe_allow_html=True
+)
+
+if "show_analytics" not in st.session_state:
+    st.session_state.show_analytics = False
+
+
+# -----------------------------------
+# HARD-FORCED URDU INTERFACE LABELS
+# -----------------------------------
+
+st.markdown(
+    """
+    <label class="custom-label" style="color: #ffffff !important; font-size: 15px; font-weight: 500; margin-bottom: 6px; display: block;">
+        How can MAVIN assist you today? / 
+        <span style="font-family:'Jameel Noori Nastaleeq', 'Noto Nastaliq Urdu', 'Urdu Typesetting', sans-serif !important; font-size:24px; color:#00e676; vertical-align: middle; direction: rtl;">
+            میں آپ کی کیا مدد کر سکتا ہوں؟
+        </span>
+    </label>
+    """, 
+    unsafe_allow_html=True
+)
+student_query = st.text_input("", placeholder="Type here in English or Urdu...", label_visibility="collapsed")
+
+
+# -----------------------------------
+# EXECUTION CONTEXT TRACKING
+# -----------------------------------
+
+if student_query:
+    if student_query.strip() == "manuuadmin2026":
+        st.session_state.show_analytics = not st.session_state.show_analytics
+        st.success(f"Diagnostics View Visibility Toggled to: {st.session_state.show_analytics}")
+    else:
+        processed_query = student_query
+        urdu_detected = is_urdu(student_query)
+        
+        with st.spinner("✨ MAVIN is processing..."):
+            if urdu_detected:
+                try:
+                    processed_query = GoogleTranslator(source='ur', target='en').translate(student_query)
+                except Exception as e:
+                    pass
+            
+            result = get_answer(processed_query)
+            save_log(processed_query, result, original_urdu=student_query if urdu_detected else "")
+
+        st.markdown(
+            f"""
+            <div class="answer-box">
+                <div class="answer-title">🤖 MAVIN:</div>
+                <div class="answer-text">{result["answer"]}</div>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+
+        show_speech_button(result["answer"])
+
+        if st.session_state.show_analytics:
+            with st.expander("📊 Technical Analytics (Office Evaluation Mode Only)", expanded=True):
+                st.markdown(f"**Confidence Match Score:** `{result['score']}`")
+                st.markdown(f"**Mapped Database Intent:** `{result['intent']}`")
+                st.markdown(f"**Category:** `{result['category']}`")
+                st.markdown(f"**Reference Master Question:** *\"{result['matched_question']}\"*")
+                if urdu_detected:
+                    st.markdown(f"**Original Urdu Script Query:** *\"{student_query}\"*")
