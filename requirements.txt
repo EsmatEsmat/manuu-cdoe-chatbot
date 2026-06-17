@@ -3,3 +3,4 @@ pandas
 sentence-transformers
 scikit-learn
 rapidfuzz
+deep-translator
