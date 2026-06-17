@@ -144,5 +144,37 @@ def get_answer(user_question):
     return {
         "answer": row["Answer"],
         "matched_question": row["Main Question"],
-        "category": row
-    
+        "category": row["Category"] if "Category" in row else "-",
+        "intent": row["Intent"] if "Intent" in row else "-",
+        "score": round(float(best_score), 3)
+    }
+
+def save_log(user_query, result, original_urdu=""):
+    log_file = "chat_logs.csv"
+    log_data = {
+        "Timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        "User Query": user_query if not original_urdu else f"{original_urdu} (Translated: {user_query})",
+        "Bot Answer": result["answer"],
+        "Matched Question": result["matched_question"],
+        "Category": result["category"],
+        "Intent": result["intent"],
+        "Confidence Score": result["score"]
+    }
+    log_df = pd.DataFrame([log_data])
+    if os.path.exists(log_file):
+        log_df.to_csv(log_file, mode="a", header=False, index=False, encoding="utf-8-sig")
+    else:
+        log_df.to_csv(log_file, index=False, encoding="utf-8-sig")
+
+
+# -----------------------------------
+# HARD-FORCED IFRAME AUDIO ENGINE
+# -----------------------------------
+def show_speech_button(answer_text):
+    safe_answer = answer_text.replace(r"\\", r"\\\\").replace(r"'", r"\'").replace(r'"', r'\"').replace("\n", " ")
+    components.html(
+        f"""
+        <html>
+        <head>
+        <style>
+        @import
