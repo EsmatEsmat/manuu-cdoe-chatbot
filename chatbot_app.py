@@ -321,34 +321,29 @@ with col2:
         pass
 
 st.markdown(
-    """
-    <div style='text-align: center; margin-top: 15px; margin-bottom: 25px;'>
-        <h2 style='color: #ffffff; font-family: "Helvetica Neue", Arial, sans-serif; font-weight: 600; font-size: 19px; margin-bottom: 4px;'>
-            MAULANA AZAD NATIONAL URDU UNIVERSITY
-        </h2>
-        
-        <p style='color: #f1c40f; font-size: 15px; font-weight: 500; letter-spacing: 0.5px; margin-top: 0; margin-bottom: 15px;'>
-            <span style='font-size: 21px; font-weight: 700;'>C</span>entre for 
-            <span style='font-size: 21px; font-weight: 700;'>D</span>istance & 
-            <span style='font-size: 21px; font-weight: 700;'>O</span>nline 
-            <span style='font-size: 21px; font-weight: 700;'>E</span>ducation
-        </p>
-        
-        <div class="urdu-font" style="font-weight: 500; font-size: 46px; color: #00c853; margin-bottom: -5px; line-height: 1.2;">
-            مُعاوِن
-        </div>
-        
-        <h1 style='color: #ffffff; font-family: "Helvetica Neue", Arial, sans-serif; font-weight: 800; font-size: 34px; margin-top: 0; margin-bottom: 2px;'>
-            MAVIN
-        </h1>
-        
-        <p style='color: rgba(255,255,255,0.85); font-size: 15px; margin-top: 0; font-weight: 500;'>
-            (MANUU Virtual Interface)
-        </p>
-        
-        <div style='height: 3px; width: 140px; background: linear-gradient(90deg, #f1c40f, #00c853); margin: 15px auto; border-radius: 2px;'></div>
-    </div>
-    """,
+"""
+<div style='text-align: center; margin-top: 15px; margin-bottom: 25px;'>
+<h2 style='color: #ffffff; font-family: "Helvetica Neue", Arial, sans-serif; font-weight: 600; font-size: 19px; margin-bottom: 4px;'>
+MAULANA AZAD NATIONAL URDU UNIVERSITY
+</h2>
+<p style='color: #f1c40f; font-size: 15px; font-weight: 500; letter-spacing: 0.5px; margin-top: 0; margin-bottom: 15px;'>
+<span style='font-size: 21px; font-weight: 700;'>C</span>entre for 
+<span style='font-size: 21px; font-weight: 700;'>D</span>istance & 
+<span style='font-size: 21px; font-weight: 700;'>O</span>nline 
+<span style='font-size: 21px; font-weight: 700;'>E</span>ducation
+</p>
+<div class="urdu-font" style="font-weight: 500; font-size: 46px; color: #00c853; margin-bottom: -5px; line-height: 1.2;">
+مُعاوِن
+</div>
+<h1 style='color: #ffffff; font-family: "Helvetica Neue", Arial, sans-serif; font-weight: 800; font-size: 34px; margin-top: 0; margin-bottom: 2px;'>
+MAVIN
+</h1>
+<p style='color: rgba(255,255,255,0.85); font-size: 15px; margin-top: 0; font-weight: 500;'>
+(MANUU Virtual Interface)
+</p>
+<div style='height: 3px; width: 140px; background: linear-gradient(90deg, #f1c40f, #00c853); margin: 15px auto; border-radius: 2px;'></div>
+</div>
+""",
     unsafe_allow_html=True
 )
 
