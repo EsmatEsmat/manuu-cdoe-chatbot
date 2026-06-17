@@ -411,7 +411,71 @@ st.markdown(
     unsafe_allow_html=True
 )
 student_query = st.text_input("", placeholder="Type here in English or Urdu...", label_visibility="collapsed")
+# -----------------------------------
+# FLOATING WIDGET LOGIC
+# -----------------------------------
+if ui_mode == "Floating Website Widget Preview":
+    st.markdown(
+        """
+        <style>
+        /* The Floating Container */
+        .floating-window {
+            position: fixed !important;
+            bottom: 30px !important;
+            right: 30px !important;
+            width: 380px !important;
+            height: 550px !important;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%) !important;
+            border-radius: 20px !important;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5) !important;
+            border: 2px solid rgba(255,255,255,0.1);
+            z-index: 999999 !important;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
 
+        /* Responsive Design for Mobile Devices */
+        @media (max-width: 600px) {
+            .floating-window {
+                width: 90vw !important;
+                height: 70vh !important;
+                right: 5vw !important;
+                bottom: 20px !important;
+            }
+        }
+        
+        /* The Window Controls Header */
+        .window-header {
+            padding: 12px 15px;
+            background: rgba(0,0,0,0.15);
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+        }
+        
+        .btn { width: 12px; height: 12px; border-radius: 50%; cursor: pointer; }
+        .close { background: #ff5f56; }
+        .minimize { background: #ffbd2e; }
+        .maximize { background: #27c93f; }
+        
+        /* Force container to fit inside our floating window */
+        .main .block-container {
+            padding: 15px !important;
+            max-width: 100% !important;
+        }
+        </style>
+
+        <div class="floating-window">
+            <div class="window-header">
+                <div class="btn minimize" title="Minimize"></div>
+                <div class="btn maximize" title="Maximize"></div>
+                <div class="btn close" title="Close" onclick="this.parentElement.parentElement.style.display='none'"></div>
+            </div>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
 
 # -----------------------------------
 # EXECUTION CONTEXT TRACKING
