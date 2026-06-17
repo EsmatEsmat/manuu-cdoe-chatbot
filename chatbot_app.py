@@ -160,21 +160,4 @@ def save_log(user_query, result, original_urdu=""):
         "Intent": result["intent"],
         "Confidence Score": result["score"]
     }
-    log_df = pd.DataFrame([log_data])
-    if os.path.exists(log_file):
-        log_df.to_csv(log_file, mode="a", header=False, index=False, encoding="utf-8-sig")
-    else:
-        log_df.to_csv(log_file, index=False, encoding="utf-8-sig")
-
-
-# -----------------------------------
-# HARD-FORCED IFRAME AUDIO ENGINE
-# -----------------------------------
-def show_speech_button(answer_text):
-    safe_answer = answer_text.replace(r"\\", r"\\\\").replace(r"'", r"\'").replace(r'"', r'\"').replace("\n", " ")
-    components.html(
-        f"""
-        <html>
-        <head>
-        <style>
-        @import
+    log_df = pd.
