@@ -281,42 +281,71 @@ st.markdown(
     .answer-title { color: #1e3c72 !important; font-weight: 700; font-size: 19px; }
     .answer-text { font-size: 16px; color: #1f2937 !important; line-height: 1.65; }
     
-    /* VISUAL KINETIC ORB DESIGN */
+    /* ADVANCED TRUE 3D KINETIC ORB CONTAINER */
     .avatar-container {
         position: relative;
-        width: 80px;
-        height: 80px;
+        width: 100px;
+        height: 100px;
         margin: 20px auto 10px auto;
         display: flex;
         align-items: center;
         justify-content: center;
+        perspective: 800px; /* Establishes visual 3D coordinate field */
     }
+    
     .core-glow-orb {
-        width: 34px;
-        height: 34px;
-        background: radial-gradient(circle, #ffffff 0%, #00e676 80%);
+        position: absolute;
+        width: 38px;
+        height: 38px;
+        background: radial-gradient(circle at 35% 35%, #ffffff 0%, #00e676 50%, #11552c 100%);
         border-radius: 50%;
-        box-shadow: 0 0 25px #00e676, 0 0 45px #1a73e8;
+        box-shadow: 0 0 25px rgba(0, 230, 118, 0.8), 0 0 45px rgba(30, 60, 114, 0.5);
+        z-index: 2; /* Keeps orb in center layer */
         animation: orbPulse 2.5s infinite ease-in-out;
     }
+    
+    /* 3D Orbit Track System */
+    .satellite-orbit-wrapper {
+        position: absolute;
+        width: 90px;
+        height: 90px;
+        transform-style: preserve-3d;
+        transform: rotateX(70deg) rotateY(-15deg); /* Tilts the canvas plane */
+        z-index: 1;
+    }
+    
     .satellite-orbit-ring {
         position: absolute;
-        width: 74px;
-        height: 24px;
-        border: 3px solid rgba(255, 255, 255, 0.9);
+        width: 100%;
+        height: 100%;
+        border: 2.5px solid rgba(255, 255, 255, 0.85);
         border-radius: 50%;
-        transform: rotateX(65deg) rotateY(15deg);
-        animation: ringOrbitSpin 4s infinite linear;
-        box-shadow: 0 0 8px #ffffff;
+        box-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
+        animation: ringOrbitSpin 3.5s infinite linear;
+        transform-style: preserve-3d;
+    }
+
+    /* Floating Satellite Node to create clear clipping overlap depth */
+    .satellite-orbit-ring::after {
+        content: "";
+        position: absolute;
+        top: -5px;
+        left: 50%;
+        width: 8px;
+        height: 8px;
+        background: #ffffff;
+        border-radius: 50%;
+        box-shadow: 0 0 12px #ffffff, 0 0 4px #00e676;
+        transform: translateX(-50%);
     }
     
     @keyframes orbPulse {
-        0%, 100% { transform: scale(1); box-shadow: 0 0 20px #00e676, 0 0 35px #1e3c72; }
-        50% { transform: scale(1.15); box-shadow: 0 0 35px #ffffff, 0 0 55px #00e676; }
+        0%, 100% { transform: scale(1); box-shadow: 0 0 25px rgba(0, 230, 118, 0.7); }
+        50% { transform: scale(1.08); box-shadow: 0 0 40px rgba(255, 255, 255, 0.9), 0 0 50px rgba(0, 230, 118, 0.9); }
     }
     @keyframes ringOrbitSpin {
-        0% { transform: rotateX(65deg) rotateY(15deg) rotateZ(0deg); }
-        100% { transform: rotateX(65deg) rotateY(15deg) rotateZ(360deg); }
+        0% { transform: rotateZ(0deg); }
+        100% { transform: rotateZ(360deg); }
     }
     </style>
     """,
@@ -396,10 +425,12 @@ st.markdown(
     <span style='font-size: 23px; font-weight: 800; color: #ffffff !important;'>E</span><span style="color: #ffffff !important;">ducation</span>
 </div>
 
-<!-- MAVIN VISUAL KINETIC ORB INTERFACE -->
+<!-- ADVANCED TRUE 3D KINETIC ORB INTERFACE -->
 <div class="avatar-container">
     <div class="core-glow-orb"></div>
-    <div class="satellite-orbit-ring"></div>
+    <div class="satellite-orbit-wrapper">
+        <div class="satellite-orbit-ring"></div>
+    </div>
 </div>
 
 <div style="margin-bottom: 5px;">
