@@ -166,26 +166,58 @@ def save_log(user_query, result, original_urdu=""):
     else:
         log_df.to_csv(log_file, index=False, encoding="utf-8-sig")
 
+
+# -----------------------------------
+# HARD-FORCED IFRAME AUDIO ENGINE
+# -----------------------------------
 def show_speech_button(answer_text):
     safe_answer = answer_text.replace("\\", "\\\\").replace("'", "\\'").replace('"', '\\"').replace("\n", " ")
     components.html(
         f"""
-        <div style="margin:0; padding:0; background:transparent; overflow:hidden;">
-            <button onclick="speakAnswer()" style="
-                background-color:#00e676; color:white; border:none; padding:10px 16px;
-                border-radius:8px; cursor:pointer; font-weight:600; font-size:15px; box-shadow: 0 2px 8px rgba(0,230,118,0.3);">
-                🔊 Listen to Answer / جواب سنیں
-            </button>
-        </div>
-        <script>
-        function speakAnswer() {{
-            window.speechSynthesis.cancel();
-            var msg = new SpeechSynthesisUtterance('{safe_answer}');
-            msg.lang = 'en-IN'; msg.rate = 0.9;
-            window.speechSynthesis.speak(msg);
+        <html>
+        <head>
+        <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;700&display=swap');
+        
+        .speech-btn {{
+            background-color: #00e676; 
+            color: #ffffff !important; 
+            border: none; 
+            padding: 10px 18px;
+            border-radius: 8px; 
+            cursor: pointer; 
+            font-size: 15px; 
+            font-weight: 600;
+            box-shadow: 0 2px 8px rgba(0,230,118,0.3);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
         }}
-        </script>
-        """, height=50
+        .speech-btn span {{
+            font-family: 'Jameel Noori Nastaleeq', 'Noto Nastaliq Urdu', 'Urdu Typesetting', sans-serif !important;
+            font-size: 20px;
+            font-weight: 500;
+            color: #ffffff !important;
+        }}
+        </style>
+        </head>
+        <body style="margin:0; padding:0; background:transparent;">
+            <button class="speech-btn" onclick="speakAnswer()">
+                🔊 Listen to Answer / <span>جواب سنیں</span>
+            </button>
+            
+            <script>
+            function speakAnswer() {{
+                window.speechSynthesis.cancel();
+                var msg = new SpeechSynthesisUtterance('{safe_answer}');
+                msg.lang = 'en-IN'; msg.rate = 0.9;
+                window.speechSynthesis.speak(msg);
+            }}
+            </script>
+        </body>
+        </html>
+        """, height=55
     )
 
 
@@ -198,7 +230,7 @@ st.markdown(
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;700&display=swap');
     
-    /* Vibrant, Ultra-Bright Core Ambient Background Gradient */
+    /* Radiant Visual Canvas Background */
     .stApp {
         background: linear-gradient(135deg, #1e3c72 0%, #2a5298 40%, #00e676 100%) !important;
     }
@@ -213,7 +245,7 @@ st.markdown(
         font-family: 'Helvetica Neue', Arial, sans-serif;
     }
     
-    /* Forced Typographic Fallback Pipeline across all interface hooks */
+    /* Forced Nastaleeq Font Framework */
     .urdu-text, [lang="ur"], .stAlert p, .custom-label span, div[data-baseweb="input"] input {
         font-family: 'Jameel Noori Nastaleeq', 'Noto Nastaliq Urdu', 'Urdu Typesetting', 'Nastaliq', sans-serif !important;
     }
@@ -244,7 +276,7 @@ st.markdown(
     .answer-title { color: #1e3c72 !important; font-weight: 700; font-size: 19px; }
     .answer-text { font-size: 16px; color: #1f2937 !important; line-height: 1.65; }
     
-    /* ANIMATION FOR THE MAVIN ROBOT ORB FIGURE */
+    /* VISUAL KINETIC ORB DESIGN */
     .avatar-container {
         position: relative;
         width: 80px;
@@ -286,14 +318,10 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-# -----------------------------------
-# POPUP FLOATING LIVE PREVIEW ENGINE
-# -----------------------------------
 if ui_mode == "Floating Website Widget Preview":
     st.markdown(
         """
         <style>
-        /* Re-styles the container to behave like a live floating window widget on a website */
         .block-container {
             max-width: 410px !important;
             height: 82vh !important;
@@ -309,8 +337,6 @@ if ui_mode == "Floating Website Widget Preview":
             z-index: 99999;
             overflow-y: auto !important;
         }
-        
-        /* Simulates the floating website popup launcher icon button at bottom right */
         .stApp::after {
             content: "💬";
             position: fixed;
@@ -346,118 +372,22 @@ if ui_mode == "Floating Website Widget Preview":
 st.markdown(
 """
 <div style="display: flex; justify-content: center; align-items: center; width: 100%; margin-bottom: 12px;">
-    <!-- Active high-availability stable vector CDN reference configuration link -->
     <img src="https://images.seeklogo.com/logo-png/22/1/maulana-azad-national-urdu-university-logo-png_seeklogo-226045.png" 
          onerror="this.src='manuu_logo.png';" 
          style="width: 120px; height: auto;" />
 </div>
 
 <div style='text-align: center; margin-top: 5px; margin-bottom: 20px;'>
-<!-- Isolated Inline Element Color-Locks Forcing White Output -->
-<div style='color: #ffffff !important; font-family: "Helvetica Neue", Arial, sans-serif; font-weight: 700; font-size: 19px; margin-bottom: 8px; letter-spacing: 0.5px; display: block; line-height: 1.3;'>
-MAULANA AZAD NATIONAL URDU UNIVERSITY
+
+<div style='color: #ffffff !important; font-family: "Helvetica Neue", Arial, sans-serif; font-weight: 700; font-size: 19px; margin-bottom: 8px; letter-spacing: 0.5px; line-height: 1.3;'>
+    <span style="color: #ffffff !important;">MAULANA AZAD NATIONAL URDU UNIVERSITY</span>
 </div>
 
-<div style='color: #ffffff !important; font-family: "Helvetica Neue", Arial, sans-serif; font-size: 15px; font-weight: 500; letter-spacing: 0.5px; margin-top: 0; margin-bottom: 10px; display: block; line-height: 1.4;'>
-<span style='font-size: 23px; font-weight: 800; color: #ffffff !important;'>C</span>entre for 
-<span style='font-size: 23px; font-weight: 800; color: #ffffff !important;'>D</span>istance and 
-<span style='font-size: 23px; font-weight: 800; color: #ffffff !important;'>O</span>nline 
-<span style='font-size: 23px; font-weight: 800; color: #ffffff !important;'>E</span>ducation
+<div style='color: #ffffff !important; font-family: "Helvetica Neue", Arial, sans-serif; font-size: 15px; font-weight: 500; letter-spacing: 0.5px; margin-top: 0; margin-bottom: 10px; line-height: 1.4;'>
+    <span style='font-size: 23px; font-weight: 800; color: #ffffff !important;'>C</span><span style="color: #ffffff !important;">entre for</span> 
+    <span style='font-size: 23px; font-weight: 800; color: #ffffff !important;'>D</span><span style="color: #ffffff !important;">istance and</span> 
+    <span style='font-size: 23px; font-weight: 800; color: #ffffff !important;'>O</span><span style="color: #ffffff !important;">nline</span> 
+    <span style='font-size: 23px; font-weight: 800; color: #ffffff !important;'>E</span><span style="color: #ffffff !important;">ducation</span>
 </div>
 
-<!-- MAVIN VISUAL KINETIC ORB INTERFACE -->
 <div class="avatar-container">
-    <div class="core-glow-orb"></div>
-    <div class="satellite-orbit-ring"></div>
-</div>
-
-<div style="margin-bottom: 5px;">
-<div style="font-family: 'Jameel Noori Nastaleeq', 'Noto Nastaliq Urdu', sans-serif !important; font-weight: 500; font-size: 52px; color: #00e676; line-height: 1.1; direction: rtl;" lang="ur">
-معاوِن
-</div>
-<div style='color: #ffffff !important; font-family: "Helvetica Neue", Arial, sans-serif; font-weight: 900; font-size: 40px; margin-top: -5px; margin-bottom: 2px; letter-spacing: 1px;'>
-MAVIN
-</div>
-</div>
-<div style='color: rgba(255,255,255,0.95) !important; font-size: 14px; margin-top: 2px; font-weight: 500; letter-spacing: 0.5px;'>
-(MANUU Virtual Interface)
-</div>
-<div style='height: 3px; width: 140px; background: linear-gradient(90deg, #ffffff, #00e676); margin: 12px auto; border-radius: 2px;'></div>
-</div>
-""",
-    unsafe_allow_html=True
-)
-
-st.markdown(
-    """
-    <div class="stAlert" style="padding: 12px; margin-bottom: 15px;">
-        <span style="color:#ffffff;">💡</span> <strong style="color:#ffffff;">Language Support:</strong> <span style="color:#ffffff;">You can type your questions comfortably in English or</span> <span class="urdu-text" style="font-family:'Jameel Noori Nastaleeq', 'Noto Nastaliq Urdu', sans-serif !important; font-size:22px; color:#00e676; vertical-align:middle;">Urdu (اردو)</span>
-    </div>
-    """, 
-    unsafe_allow_html=True
-)
-
-if "show_analytics" not in st.session_state:
-    st.session_state.show_analytics = False
-
-
-# -----------------------------------
-# HARD-FORCED URDU INTERFACE LABELS
-# -----------------------------------
-
-st.markdown(
-    """
-    <label class="custom-label" style="color: #ffffff !important; font-size: 15px; font-weight: 500; margin-bottom: 6px; display: block;">
-        How can MAVIN assist you today? / 
-        <span style="font-family:'Jameel Noori Nastaleeq', 'Noto Nastaliq Urdu', 'Urdu Typesetting', sans-serif !important; font-size:24px; color:#00e676; vertical-align: middle; direction: rtl;">
-            میں آپ کی کیا مدد کر سکتا ہوں؟
-        </span>
-    </label>
-    """, 
-    unsafe_allow_html=True
-)
-student_query = st.text_input("", placeholder="Type here in English or Urdu...", label_visibility="collapsed")
-
-
-# -----------------------------------
-# EXECUTION CONTEXT TRACKING
-# -----------------------------------
-
-if student_query:
-    if student_query.strip() == "manuuadmin2026":
-        st.session_state.show_analytics = not st.session_state.show_analytics
-        st.success(f"Diagnostics View Visibility Toggled to: {st.session_state.show_analytics}")
-    else:
-        processed_query = student_query
-        urdu_detected = is_urdu(student_query)
-        
-        with st.spinner("✨ MAVIN is processing..."):
-            if urdu_detected:
-                try:
-                    processed_query = GoogleTranslator(source='ur', target='en').translate(student_query)
-                except Exception as e:
-                    pass
-            
-            result = get_answer(processed_query)
-            save_log(processed_query, result, original_urdu=student_query if urdu_detected else "")
-
-        st.markdown(
-            f"""
-            <div class="answer-box">
-                <div class="answer-title">🤖 MAVIN:</div>
-                <div class="answer-text">{result["answer"]}</div>
-            </div>
-            """,
-            unsafe_allow_html=True
-        )
-
-        show_speech_button(result["answer"])
-
-        if st.session_state.show_analytics:
-            with st.expander("📊 Technical Analytics (Office Evaluation Mode Only)", expanded=True):
-                st.markdown(f"**Confidence Match Score:** `{result['score']}`")
-                st.markdown(f"**Mapped Database Intent:** `{result['intent']}`")
-                st.markdown(f"**Category:** `{result['category']}`")
-                st.markdown(f"**Reference Master Question:** *\"{result['matched_question']}\"*")
-                if urdu_detected:
-                    st.markdown(f"**Original Urdu Script Query:** *\"{student_query}\"*")
