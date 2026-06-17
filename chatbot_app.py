@@ -28,7 +28,7 @@ from deep_translator import GoogleTranslator
 
 st.set_page_config(
     page_title="MAVIN - CDOE MANUU",
-    page_icon="cdoe_logo.png",  
+    page_icon="manuu_logo.png",  # Configured to look for the official MANUU University emblem asset
     layout="centered"
 )
 
@@ -215,7 +215,7 @@ def show_speech_button(answer_text):
     components.html(
         f"""
         <button onclick="speakAnswer()" style="
-            background-color:#2ecc71;
+            background-color:#00c853;
             color:white;
             border:none;
             padding:10px 16px;
@@ -248,8 +248,9 @@ def show_speech_button(answer_text):
 st.markdown(
     """
     <style>
+    /* Vibrant presentation gradient shifting from Dark Sky Blue to Bright Green */
     .stApp {
-        background: linear-gradient(135deg, #0b3c5d 0%, #062f4f 40%, #0d5c3a 100%) !important;
+        background: linear-gradient(135deg, #1a73e8 0%, #0d47a1 50%, #00c853 100%) !important;
     }
     .stMarkdown, p, h1, h2, h3, h4, span, label, li {
         color: #ffffff !important;
@@ -261,33 +262,33 @@ st.markdown(
     }
     .stAlert {
         background-color: rgba(255, 255, 255, 0.12) !important;
-        border-left: 5px solid #2ecc71 !important;
+        border-left: 5px solid #00c853 !important;
         color: #ffffff !important;
         border-radius: 14px;
         backdrop-filter: blur(8px);
     }
     div.stTextInput > div > div > input {
         border-radius: 14px;
-        border: 2px solid #34495e;
+        border: 2px solid #1a73e8;
         padding: 14px;
         font-size: 16px;
         background-color: #ffffff !important;
         color: #1a252f !important;
     }
     div.stTextInput > div > div > input:focus {
-        border-color: #2ecc71 !important;
+        border-color: #00c853 !important;
     }
     .answer-box {
         background-color: #ffffff !important;
         padding: 26px;
         border-radius: 18px;
         box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
-        border-left: 6px solid #2ecc71;
+        border-left: 6px solid #00c853;
         margin-top: 20px;
         margin-bottom: 20px;
     }
     .answer-title {
-        color: #0d5c3a !important;
+        color: #0d47a1 !important;
         font-weight: 700;
         font-size: 19px;
         margin-bottom: 10px;
@@ -301,38 +302,51 @@ st.markdown(
         background-color: rgba(255, 255, 255, 0.05) !important;
         border-radius: 10px;
     }
+    
+    /* Global Nastaleeq font optimization for smooth script rendering */
+    .urdu-font {
+        font-family: 'Jameel Noori Nastaleeq', 'Alvi Lahori Nastaleeq', 'Urdu Typesetting', 'Nastaliq', sans-serif !important;
+    }
     </style>
     """,
     unsafe_allow_html=True
 )
 
-# App branding Header Row
+# App branding Header Row containing the official MANUU Crest
 col1, col2, col3 = st.columns([1, 1.2, 1])
 with col2:
-    st.markdown(
-        """
-        <div style="display: flex; justify-content: center; margin-bottom: -15px;">
-            <iframe src="https://lottie.host/embed/8987b40d-d450-4824-9549-b3a1ca7e8e53/ZpZgV0S36W.json" 
-                    style="width: 140px; height: 140px; border: none; background: transparent;">
-            </iframe>
-        </div>
-        """, 
-        unsafe_allow_html=True
-    )
+    try:
+        st.image("manuu_logo.png", width=140)
+    except:
+        pass
 
 st.markdown(
     """
-    <div style='text-align: center; margin-top: 5px; margin-bottom: 25px;'>
-        <h2 style='color: #ffffff; font-family: "Helvetica Neue", Arial, sans-serif; font-weight: 600; font-size: 19px; margin-bottom: 2px;'>
+    <div style='text-align: center; margin-top: 15px; margin-bottom: 25px;'>
+        <h2 style='color: #ffffff; font-family: "Helvetica Neue", Arial, sans-serif; font-weight: 600; font-size: 19px; margin-bottom: 4px;'>
             MAULANA AZAD NATIONAL URDU UNIVERSITY
         </h2>
-        <p style='color: #f1c40f; font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; margin-top: 0; margin-bottom: 12px;'>
-            Centre for Distance & Online Education
+        
+        <!-- Enlarged Initial Capitals Layout styling -->
+        <p style='color: #f1c40f; font-size: 15px; font-weight: 500; letter-spacing: 0.5px; margin-top: 0; margin-bottom: 15px;'>
+            <span style='font-size: 21px; font-weight: 700;'>C</span>entre for 
+            <span style='font-size: 21px; font-weight: 700;'>D</span>istance & 
+            <span style='font-size: 21px; font-weight: 700;'>O</span>nline 
+            <span style='font-size: 21px; font-weight: 700;'>E</span>ducation
         </p>
-        <h1 style='color: #ffffff; font-family: "Helvetica Neue", Arial, sans-serif; font-weight: 800; font-size: 34px; margin-top: 0; margin-bottom: 5px;'>
-            MAVIN <span style="font-family: 'Urdu Typesetting', 'Nastaliq', sans-serif; font-weight: 500; font-size: 36px; margin-left: 12px; color: #2ecc71; vertical-align: middle;">معاون</span>
+        
+        <!-- Hierarchical Title Track: Urdu script placed prominently on top -->
+        <div class="urdu-font" style="font-weight: 500; font-size: 46px; color: #00c853; margin-bottom: -5px; line-height: 1.2;">
+            مُعاوِن
+        </div>
+        <h1 style='color: #ffffff; font-family: "Helvetica Neue", Arial, sans-serif; font-weight: 800; font-size: 34px; margin-top: 0; margin-bottom: 2px;'>
+            MAVIN
         </h1>
-        <div style='height: 3px; width: 140px; background: linear-gradient(90deg, #f1c40f, #2ecc71); margin: 15px auto; border-radius: 2px;'></div>
+        <p style='color: rgba(255,255,255,0.85); font-size: 15px; margin-top: 0; font-weight: 500;'>
+            (MANUU Virtual Interface)
+        </p>
+        
+        <div style='height: 3px; width: 140px; background: linear-gradient(90deg, #f1c40f, #00c853); margin: 15px auto; border-radius: 2px;'></div>
     </div>
     """,
     unsafe_allow_html=True
