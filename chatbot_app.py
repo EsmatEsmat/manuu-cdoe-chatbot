@@ -130,45 +130,4 @@ def get_answer(user_question):
     best_score = combined_scores[best_index]
     row = faq.iloc[best_index]
 
-    safety_check_score = (0.70 * best_score) + (0.30 * (fuzz.WRatio(cleaned_question, row["search_text"]) / 100))
-
-    if safety_check_score < 0.45:
-        return {
-            "answer": "I am sorry, I can only answer MANUU CDOE related questions. Please refine your query with more specific terms.",
-            "matched_question": "No confident match",
-            "category": "-",
-            "intent": "-",
-            "score": round(float(safety_check_score), 3)
-        }
-
-    return {
-        "answer": row["Answer"],
-        "matched_question": row["Main Question"],
-        "category": row["Category"] if "Category" in row else "-",
-        "intent": row["Intent"] if "Intent" in row else "-",
-        "score": round(float(best_score), 3)
-    }
-
-def save_log(user_query, result, original_urdu=""):
-    log_file = "chat_logs.csv"
-    log_data = {
-        "Timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-        "User Query": user_query if not original_urdu else f"{original_urdu} (Translated: {user_query})",
-        "Bot Answer": result["answer"],
-        "Matched Question": result["matched_question"],
-        "Category": result["category"],
-        "Intent": result["intent"],
-        "Confidence Score": result["score"]
-    }
-    log_df = pd.DataFrame([log_data])
-    if os.path.exists(log_file):
-        log_df.to_csv(log_file, mode="a", header=False, index=False, encoding="utf-8-sig")
-    else:
-        log_df.to_csv(log_file, index=False, encoding="utf-8-sig")
-
-
-# -----------------------------------
-# HARD-FORCED IFRAME AUDIO ENGINE
-# -----------------------------------
-def show_speech_button(answer_text):
-    safe_answer = answer_text.replace("\\", "\\
+    safety_check_score = (0.70 * best_score) + (
