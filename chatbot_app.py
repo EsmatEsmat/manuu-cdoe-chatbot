@@ -289,13 +289,15 @@ st.markdown(
         animation: ringOrbitSpin 4s infinite linear;
         box-shadow: 0 0 8px #ffffff;
     }}
+    
+    /* Escaping percent characters properly inside dynamic strings */
     @keyframes orbPulse {{
-        0%, 100% {{ transform: scale(1); box-shadow: 0 0 20px #00e676, 0 0 35px #1e3c72; }}
-        50% {{ transform: scale(1.15); box-shadow: 0 0 35px #ffffff, 0 0 55px #00e676; }}
+        0%%, 100%% {{ transform: scale(1); box-shadow: 0 0 20px #00e676, 0 0 35px #1e3c72; }}
+        50%% {{ transform: scale(1.15); box-shadow: 0 0 35px #ffffff, 0 0 55px #00e676; }}
     }}
     @keyframes ringOrbitSpin {{
-        0% { transform: rotateX(65deg) rotateY(15deg) rotateZ(0deg); }
-        100% { transform: rotateX(65deg) rotateY(15deg) rotateZ(360deg); }
+        0%% {{ transform: rotateX(65deg) rotateY(15deg) rotateZ(0deg); }}
+        100%% {{ transform: rotateX(65deg) rotateY(15deg) rotateZ(360deg); }}
     }}
     
     {widget_css}
@@ -395,7 +397,6 @@ if student_query:
             if urdu_detected:
                 try:
                     processed_query = GoogleTranslator(source='ur', target='en').translate(student_query)
-                    # Translation toast notification popup has been cleanly stripped out for a seamless UI
                 except Exception as e:
                     pass
             
