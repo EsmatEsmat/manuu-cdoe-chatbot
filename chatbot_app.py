@@ -123,7 +123,6 @@ def get_answer(user_question):
     semantic_scores = cosine_similarity(question_embedding, faq_embeddings)[0]
 
     combined_scores = []
-    # FIXED: Restored the missing closing bracket for enumerate()
     for i, row_text in enumerate(faq["search_text"]):
         combined_scores.append(float(semantic_scores[i]))
 
@@ -145,119 +144,5 @@ def get_answer(user_question):
     return {
         "answer": row["Answer"],
         "matched_question": row["Main Question"],
-        "category": row["Category"] if "Category" in row else "-",
-        "intent": row["Intent"] if "Intent" in row else "-",
-        "score": round(float(best_score), 3)
-    }
-
-def save_log(user_query, result, original_urdu=""):
-    log_file = "chat_logs.csv"
-    log_data = {
-        "Timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-        "User Query": user_query if not original_urdu else f"{original_urdu} (Translated: {user_query})",
-        "Bot Answer": result["answer"],
-        "Matched Question": result["matched_question"],
-        "Category": result["category"],
-        "Intent": result["intent"],
-        "Confidence Score": result["score"]
-    }
-    log_df = pd.DataFrame([log_data])
-    if os.path.exists(log_file):
-        log_df.to_csv(log_file, mode="a", header=False, index=False, encoding="utf-8-sig")
-    else:
-        log_df.to_csv(log_file, index=False, encoding="utf-8-sig")
-
-
-# -----------------------------------
-# HARD-FORCED IFRAME AUDIO ENGINE
-# -----------------------------------
-def show_speech_button(answer_text):
-    safe_answer = answer_text.replace(r"\\", r"\\\\").replace(r"'", r"\'").replace(r'"', r'\"').replace("\n", " ")
-    components.html(
-        f"""
-        <html>
-        <head>
-        <style>
-        @import url('https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;700&display=swap');
-        
-        .speech-btn {{
-            background-color: #00e676; 
-            border: none; 
-            padding: 10px 18px;
-            border-radius: 8px; 
-            cursor: pointer; 
-            font-size: 15px; 
-            font-weight: 600;
-            box-shadow: 0 2px 8px rgba(0,230,118,0.3);
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            font-family: 'Helvetica Neue', Arial, sans-serif;
-            color: #ffffff !important;
-        }}
-        .speech-btn span {{
-            font-family: 'Jameel Noori Nastaleeq', 'Noto Nastaliq Urdu', 'Urdu Typesetting', sans-serif !important;
-            font-size: 20px;
-            font-weight: 500;
-            color: #ffffff !important;
-        }}
-        </style>
-        </head>
-        <body style="margin:0; padding:0; background:transparent;">
-            <button class="speech-btn" onclick="speakAnswer()">
-                🔊 <span style="color:#ffffff !important;">Listen to Answer / </span><span>جواب سنیں</span>
-            </button>
-            
-            <script>
-            function speakAnswer() {{
-                window.speechSynthesis.cancel();
-                var msg = new SpeechSynthesisUtterance('{safe_answer}');
-                msg.lang = 'en-IN'; msg.rate = 0.9;
-                window.speechSynthesis.speak(msg);
-            }}
-            </script>
-        </body>
-        </html>
-        """, height=55
-    )
-
-
-# -----------------------------------
-# BRIGHT & VIBRANT VISUAL ENGINE
-# -----------------------------------
-
-st.markdown(
-    """
-    <style>
-    @import url('https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;700&display=swap');
+        "category": row
     
-    /* Radiant Visual Canvas Background */
-    .stApp {
-        background: linear-gradient(135deg, #1e3c72 0%, #2a5298 40%, #00e676 100%) !important;
-    }
-    
-    .block-container {
-        max-width: 750px !important;
-        padding-top: 2rem !important;
-        padding-bottom: 3rem !important;
-    }
-    
-    /* Strict Text Color System Force Rules */
-    h1, h2, h3, h4, h5, h6, .stMarkdown p, .stMarkdown span, label {
-        color: #ffffff !important;
-    }
-    
-    body, p, span, div, label {
-        font-family: 'Helvetica Neue', Arial, sans-serif;
-    }
-    
-    /* Forced Nastaleeq Font Framework */
-    .urdu-text, [lang="ur"], .stAlert p, .custom-label span, div[data-baseweb="input"] input {
-        font-family: 'Jameel Noori Nastaleeq', 'Noto Nastaliq Urdu', 'Urdu Typesetting', 'Nastaliq', sans-serif !important;
-    }
-    
-    div[data-baseweb="input"] input {
-        font-size: 22px !important;
-        line-height: 1.8 !important;
-        direction: auto !important;
-    }
