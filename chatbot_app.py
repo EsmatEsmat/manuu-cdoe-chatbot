@@ -193,76 +193,62 @@ def show_speech_button(answer_text):
 # BRIGHT & VIBRANT VISUAL ENGINE
 # -----------------------------------
 
-widget_css = ""
-if ui_mode == "Floating Website Widget Preview":
-    widget_css = """
-    .block-container {
-        max-width: 430px !important;
-        background: rgba(255, 255, 255, 0.15) !important;
-        border-radius: 24px !important;
-        padding: 24px !important;
-        box-shadow: 0 20px 50px rgba(0,0,0,0.4) !important;
-        margin: 30px auto !important;
-        border: 2px solid rgba(255,255,255,0.25);
-        backdrop-filter: blur(15px);
-    }
-    """
-
+# Raw HTML Injector to isolate and secure pure CSS parsing away from Python formatting errors
 st.markdown(
-    f"""
+    """
     <style>
-    @import url('https://fonts.cdnfonts.com/css/jameel-noori-nastaleeq');
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;700&display=swap');
     
     /* Vibrant, Ultra-Bright Core Ambient Background Gradient */
-    .stApp {{
+    .stApp {
         background: linear-gradient(135deg, #1e3c72 0%, #2a5298 40%, #00e676 100%) !important;
-    }}
+    }
     
-    .block-container {{
+    .block-container {
         max-width: 750px !important;
         padding-top: 2rem !important;
         padding-bottom: 3rem !important;
-    }}
+    }
     
     /* Absolute Font Hierarchy Fix */
-    body, p, span, div, label {{
+    body, p, span, div, label {
         font-family: 'Helvetica Neue', Arial, sans-serif;
-    }}
+    }
     
     /* Forcing Jameel Noori Nastaleeq explicitly into text blocks and text inputs */
-    .urdu-text, [lang="ur"], .stAlert p, .custom-label span, div[data-baseweb="input"] input {{
-        font-family: 'Jameel Noori Nastaleeq', 'Urdu Typesetting', 'Nastaliq', sans-serif !important;
-    }}
+    .urdu-text, [lang="ur"], .stAlert p, .custom-label span, div[data-baseweb="input"] input {
+        font-family: 'Jameel Noori Nastaleeq', 'Noto Nastaliq Urdu', 'Urdu Typesetting', 'Nastaliq', sans-serif !important;
+    }
     
     /* Direct targeting of input box to render typed Urdu perfectly */
-    div[data-baseweb="input"] input {{
+    div[data-baseweb="input"] input {
         font-size: 22px !important;
         line-height: 1.8 !important;
         direction: auto !important;
-    }}
+    }
     
-    .stAlert {{
+    .stAlert {
         background-color: rgba(255, 255, 255, 0.15) !important;
         border-left: 5px solid #00e676 !important;
         border-radius: 14px;
         backdrop-filter: blur(10px);
-    }}
-    div.stTextInput > div > div > input {{
+    }
+    div.stTextInput > div > div > input {
         border-radius: 14px; 
         border: 2px solid #1a73e8; 
         padding: 14px; 
         background-color: #ffffff !important;
         color: #1a252f !important;
-    }}
-    .answer-box {{
+    }
+    .answer-box {
         background-color: #ffffff !important; padding: 26px; border-radius: 18px;
         box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3); border-left: 6px solid #00e676; margin: 20px 0;
-    }}
-    .answer-title {{ color: #1e3c72 !important; font-weight: 700; font-size: 19px; }}
-    .answer-text {{ font-size: 16px; color: #1f2937 !important; line-height: 1.65; }}
+    }
+    .answer-title { color: #1e3c72 !important; font-weight: 700; font-size: 19px; }
+    .answer-text { font-size: 16px; color: #1f2937 !important; line-height: 1.65; }
     
-    /* RESTORED ANIMATION FOR THE MAVIN ROBOT ORB FIGURE */
-    .avatar-container {{
+    /* ANIMATION FOR THE MAVIN ROBOT ORB FIGURE */
+    .avatar-container {
         position: relative;
         width: 80px;
         height: 80px;
@@ -270,16 +256,16 @@ st.markdown(
         display: flex;
         align-items: center;
         justify-content: center;
-    }}
-    .core-glow-orb {{
+    }
+    .core-glow-orb {
         width: 34px;
         height: 34px;
         background: radial-gradient(circle, #ffffff 0%, #00e676 80%);
         border-radius: 50%;
         box-shadow: 0 0 25px #00e676, 0 0 45px #1a73e8;
         animation: orbPulse 2.5s infinite ease-in-out;
-    }}
-    .satellite-orbit-ring {{
+    }
+    .satellite-orbit-ring {
         position: absolute;
         width: 74px;
         height: 24px;
@@ -288,23 +274,40 @@ st.markdown(
         transform: rotateX(65deg) rotateY(15deg);
         animation: ringOrbitSpin 4s infinite linear;
         box-shadow: 0 0 8px #ffffff;
-    }}
+    }
     
-    /* Escaping percent characters properly inside dynamic strings */
-    @keyframes orbPulse {{
-        0%%, 100%% {{ transform: scale(1); box-shadow: 0 0 20px #00e676, 0 0 35px #1e3c72; }}
-        50%% {{ transform: scale(1.15); box-shadow: 0 0 35px #ffffff, 0 0 55px #00e676; }}
-    }}
-    @keyframes ringOrbitSpin {{
-        0%% {{ transform: rotateX(65deg) rotateY(15deg) rotateZ(0deg); }}
-        100%% {{ transform: rotateX(65deg) rotateY(15deg) rotateZ(360deg); }}
-    }}
-    
-    {widget_css}
+    @keyframes orbPulse {
+        0%, 100% { transform: scale(1); box-shadow: 0 0 20px #00e676, 0 0 35px #1e3c72; }
+        50% { transform: scale(1.15); box-shadow: 0 0 35px #ffffff, 0 0 55px #00e676; }
+    }
+    @keyframes ringOrbitSpin {
+        0% { transform: rotateX(65deg) rotateY(15deg) rotateZ(0deg); }
+        100% { transform: rotateX(65deg) rotateY(15deg) rotateZ(360deg); }
+    }
     </style>
     """,
     unsafe_allow_html=True
 )
+
+# Apply runtime UI dimension compression layout parameters if popup preview is selected
+if ui_mode == "Floating Website Widget Preview":
+    st.markdown(
+        """
+        <style>
+        .block-container {
+            max-width: 430px !important;
+            background: rgba(255, 255, 255, 0.15) !important;
+            border-radius: 24px !important;
+            padding: 24px !important;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.4) !important;
+            margin: 30px auto !important;
+            border: 2px solid rgba(255,255,255,0.25);
+            backdrop-filter: blur(15px);
+        }
+        </style>
+        """,
+        unsafe_allow_html=True
+    )
 
 
 # -----------------------------------
@@ -323,18 +326,21 @@ st.markdown(
 <h2 style='color: #ffffff !important; font-family: "Helvetica Neue", Arial, sans-serif; font-weight: 700; font-size: 22px; margin-bottom: 6px; letter-spacing: 0.5px;'>
 MAULANA AZAD NATIONAL URDU UNIVERSITY
 </h2>
+
 <p style='color: #ffffff !important; font-family: "Helvetica Neue", Arial, sans-serif; font-size: 18px; font-weight: 500; letter-spacing: 0.5px; margin-top: 0; margin-bottom: 10px;'>
-Centre for Distance and Online Education
+<span style='font-size: 26px; font-weight: 800;'>C</span>entre for 
+<span style='font-size: 26px; font-weight: 800;'>D</span>istance and 
+<span style='font-size: 26px; font-weight: 800;'>O</span>nline 
+<span style='font-size: 26px; font-weight: 800;'>E</span>ducation
 </p>
 
-<!-- MAVIN VISUAL KINETIC ORB INTERFACE -->
 <div class="avatar-container">
     <div class="core-glow-orb"></div>
     <div class="satellite-orbit-ring"></div>
 </div>
 
 <div style="margin-bottom: 10px;">
-<div style="font-family: 'Jameel Noori Nastaleeq', 'Urdu Typesetting', sans-serif !important; font-weight: 500; font-size: 58px; color: #00e676; line-height: 1.1; direction: rtl;" lang="ur">
+<div style="font-family: 'Jameel Noori Nastaleeq', 'Noto Nastaliq Urdu', sans-serif !important; font-weight: 500; font-size: 58px; color: #00e676; line-height: 1.1; direction: rtl;" lang="ur">
 معاوِن
 </div>
 <div style='color: #ffffff !important; font-family: "Helvetica Neue", Arial, sans-serif; font-weight: 900; font-size: 46px; margin-top: -5px; margin-bottom: 2px; letter-spacing: 1px;'>
@@ -353,7 +359,7 @@ MAVIN
 st.markdown(
     """
     <div class="stAlert" style="padding: 15px; margin-bottom: 20px;">
-        <span style="color:#ffffff;">💡</span> <strong style="color:#ffffff;">Language Support:</strong> <span style="color:#ffffff;">You can type your questions comfortably in English or</span> <span class="urdu-text" style="font-family:'Jameel Noori Nastaleeq', sans-serif !important; font-size:24px; color:#00e676; vertical-align:middle;">اردو (اردو)</span>
+        <span style="color:#ffffff;">💡</span> <strong style="color:#ffffff;">Language Support:</strong> <span style="color:#ffffff;">You can type your questions comfortably in English or</span> <span class="urdu-text" style="font-family:'Jameel Noori Nastaleeq', 'Noto Nastaliq Urdu', sans-serif !important; font-size:24px; color:#00e676; vertical-align:middle;">Urdu (اردو)</span>
     </div>
     """, 
     unsafe_allow_html=True
@@ -371,7 +377,7 @@ st.markdown(
     """
     <label class="custom-label" style="color: #ffffff !important; font-size: 16px; font-weight: 500; margin-bottom: 8px; display: block;">
         How can MAVIN assist you today? / 
-        <span style="font-family:'Jameel Noori Nastaleeq', 'Urdu Typesetting', sans-serif !important; font-size:26px; color:#00e676; vertical-align: middle; direction: rtl;">
+        <span style="font-family:'Jameel Noori Nastaleeq', 'Noto Nastaliq Urdu', 'Urdu Typesetting', sans-serif !important; font-size:26px; color:#00e676; vertical-align: middle; direction: rtl;">
             میں آپ کی کیا مدد کر سکتا ہوں؟
         </span>
     </label>
