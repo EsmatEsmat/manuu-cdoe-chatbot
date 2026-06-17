@@ -418,7 +418,6 @@ if ui_mode == "Floating Website Widget Preview":
     st.markdown(
         """
         <style>
-        /* The Floating Container */
         .floating-window {
             position: fixed !important;
             bottom: 30px !important;
@@ -433,46 +432,59 @@ if ui_mode == "Floating Website Widget Preview":
             display: flex;
             flex-direction: column;
             overflow: hidden;
-        }
-
-        /* Responsive Design for Mobile Devices */
-        @media (max-width: 600px) {
-            .floating-window {
-                width: 90vw !important;
-                height: 70vh !important;
-                right: 5vw !important;
-                bottom: 20px !important;
-            }
+            cursor: default;
         }
         
-        /* The Window Controls Header */
         .window-header {
             padding: 12px 15px;
-            background: rgba(0,0,0,0.15);
+            background: rgba(0,0,0,0.2);
             display: flex;
             justify-content: flex-end;
             gap: 8px;
+            cursor: move; /* Indicates the header is draggable */
         }
         
         .btn { width: 12px; height: 12px; border-radius: 50%; cursor: pointer; }
         .close { background: #ff5f56; }
         .minimize { background: #ffbd2e; }
         .maximize { background: #27c93f; }
-        
-        /* Force container to fit inside our floating window */
-        .main .block-container {
-            padding: 15px !important;
-            max-width: 100% !important;
-        }
         </style>
 
-        <div class="floating-window">
-            <div class="window-header">
-                <div class="btn minimize" title="Minimize"></div>
-                <div class="btn maximize" title="Maximize"></div>
-                <div class="btn close" title="Close" onclick="this.parentElement.parentElement.style.display='none'"></div>
+        <div id="mavin-window" class="floating-window">
+            <div id="mavin-header" class="window-header">
+                <div class="btn minimize"></div>
+                <div class="btn maximize"></div>
+                <div class="btn close" onclick="this.parentElement.parentElement.style.display='none'"></div>
             </div>
         </div>
+
+        <script>
+        (function() {
+            var el = document.getElementById("mavin-window");
+            var header = document.getElementById("mavin-header");
+            var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+            
+            header.onmousedown = function(e) {
+                e.preventDefault();
+                pos3 = e.clientX;
+                pos4 = e.clientY;
+                document.onmouseup = function() {
+                    document.onmouseup = null;
+                    document.onmousemove = null;
+                };
+                document.onmousemove = function(e) {
+                    pos1 = pos3 - e.clientX;
+                    pos2 = pos4 - e.clientY;
+                    pos3 = e.clientX;
+                    pos4 = e.clientY;
+                    el.style.top = (el.offsetTop - pos2) + "px";
+                    el.style.left = (el.offsetLeft - pos1) + "px";
+                    el.style.bottom = "auto";
+                    el.style.right = "auto";
+                };
+            };
+        })();
+        </script>
         """,
         unsafe_allow_html=True
     )
