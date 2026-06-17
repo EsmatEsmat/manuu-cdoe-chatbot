@@ -281,7 +281,7 @@ st.markdown(
     .answer-title { color: #1e3c72 !important; font-weight: 700; font-size: 19px; }
     .answer-text { font-size: 16px; color: #1f2937 !important; line-height: 1.65; }
     
-    /* ADVANCED TRUE 3D KINETIC ORB CONTAINER */
+    /* QUANTUM CORE INTELLIGENCE SPHERE ANIMATION */
     .avatar-container {
         position: relative;
         width: 100px;
@@ -290,62 +290,54 @@ st.markdown(
         display: flex;
         align-items: center;
         justify-content: center;
-        perspective: 800px; /* Establishes visual 3D coordinate field */
     }
     
-    .core-glow-orb {
-        position: absolute;
-        width: 38px;
-        height: 38px;
-        background: radial-gradient(circle at 35% 35%, #ffffff 0%, #00e676 50%, #11552c 100%);
+    .quantum-sphere {
+        position: relative;
+        width: 46px;
+        height: 46px;
+        background: radial-gradient(circle at 30% 30%, #ffffff 0%, #00e676 50%, #004d40 100%);
         border-radius: 50%;
-        box-shadow: 0 0 25px rgba(0, 230, 118, 0.8), 0 0 45px rgba(30, 60, 114, 0.5);
-        z-index: 2; /* Keeps orb in center layer */
-        animation: orbPulse 2.5s infinite ease-in-out;
+        box-shadow: 0 0 25px rgba(0, 230, 118, 0.8), 0 0 45px rgba(30, 82, 152, 0.6);
+        animation: sphereGlow 3s infinite ease-in-out;
+        overflow: hidden;
     }
     
-    /* 3D Orbit Track System */
-    .satellite-orbit-wrapper {
-        position: absolute;
-        width: 90px;
-        height: 90px;
-        transform-style: preserve-3d;
-        transform: rotateX(70deg) rotateY(-15deg); /* Tilts the canvas plane */
-        z-index: 1;
-    }
-    
-    .satellite-orbit-ring {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        border: 2.5px solid rgba(255, 255, 255, 0.85);
-        border-radius: 50%;
-        box-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
-        animation: ringOrbitSpin 3.5s infinite linear;
-        transform-style: preserve-3d;
-    }
-
-    /* Floating Satellite Node to create clear clipping overlap depth */
-    .satellite-orbit-ring::after {
+    /* Energy Contour rings running along the surface */
+    .quantum-sphere::before {
         content: "";
         position: absolute;
-        top: -5px;
-        left: 50%;
-        width: 8px;
-        height: 8px;
-        background: #ffffff;
+        top: -10%; left: -10%; width: 120%; height: 120%;
+        border: 3px double rgba(255, 255, 255, 0.35);
+        border-radius: 45%;
+        animation: surfaceWarp 4s infinite linear;
+    }
+
+    /* Outward ambient aura pulse tracking behind the sphere */
+    .quantum-pulse-ring {
+        position: absolute;
+        width: 70px;
+        height: 70px;
+        border: 2px dashed rgba(0, 230, 118, 0.5);
         border-radius: 50%;
-        box-shadow: 0 0 12px #ffffff, 0 0 4px #00e676;
-        transform: translateX(-50%);
+        animation: radarPulse 2.5s infinite cubic-bezier(0.215, 0.610, 0.355, 1);
+        z-index: -1;
     }
     
-    @keyframes orbPulse {
-        0%, 100% { transform: scale(1); box-shadow: 0 0 25px rgba(0, 230, 118, 0.7); }
-        50% { transform: scale(1.08); box-shadow: 0 0 40px rgba(255, 255, 255, 0.9), 0 0 50px rgba(0, 230, 118, 0.9); }
+    @keyframes sphereGlow {
+        0%, 100% { transform: scale(1); box-shadow: 0 0 25px rgba(0, 230, 118, 0.8); }
+        50% { transform: scale(1.06); box-shadow: 0 0 35px rgba(255,255,255,0.9), 0 0 50px rgba(0,230,118,1); }
     }
-    @keyframes ringOrbitSpin {
-        0% { transform: rotateZ(0deg); }
-        100% { transform: rotateZ(360deg); }
+    
+    @keyframes surfaceWarp {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+    
+    @keyframes radarPulse {
+        0% { transform: scale(0.6); opacity: 0; }
+        50% { opacity: 1; }
+        100% { transform: scale(1.3); opacity: 0; }
     }
     </style>
     """,
@@ -368,158 +360,4 @@ if ui_mode == "Floating Website Widget Preview":
             position: fixed !important;
             bottom: 110px !important;
             right: 30px !important;
-            z-index: 99999;
-            overflow-y: auto !important;
-        }
-        .stApp::after {
-            content: "💬";
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            width: 65px;
-            height: 65px;
-            background: #00e676;
-            border-radius: 50%;
-            box-shadow: 0 4px 15px rgba(0,230,118,0.4);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 30px;
-            cursor: pointer;
-            z-index: 100000;
-            animation: bubblePulse 2s infinite;
-        }
-        @keyframes bubblePulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.08); }
-        }
-        </style>
-        """,
-        unsafe_allow_html=True
-    )
-
-
-# -----------------------------------
-# GEOMETRICALLY CENTERED BRANDING HEADER
-# -----------------------------------
-
-st.markdown(
-"""
-<div style="display: flex; justify-content: center; align-items: center; width: 100%; margin-bottom: 12px;">
-    <img src="https://images.seeklogo.com/logo-png/22/1/maulana-azad-national-urdu-university-logo-png_seeklogo-226045.png" 
-         onerror="this.src='manuu_logo.png';" 
-         style="width: 120px; height: auto;" />
-</div>
-
-<div style='text-align: center; margin-top: 5px; margin-bottom: 20px;'>
-
-<!-- FIXED INLINE PROTECTION: Forces headers to always remain white -->
-<div style='font-family: "Helvetica Neue", Arial, sans-serif; font-weight: 700; font-size: 19px; margin-bottom: 8px; letter-spacing: 0.5px; line-height: 1.3;'>
-    <span style="color: #ffffff !important;">MAULANA AZAD NATIONAL URDU UNIVERSITY</span>
-</div>
-
-<div style='font-family: "Helvetica Neue", Arial, sans-serif; font-size: 15px; font-weight: 500; letter-spacing: 0.5px; margin-top: 0; margin-bottom: 10px; line-height: 1.4;'>
-    <span style='font-size: 23px; font-weight: 800; color: #ffffff !important;'>C</span><span style="color: #ffffff !important;">entre for</span> 
-    <span style='font-size: 23px; font-weight: 800; color: #ffffff !important;'>D</span><span style="color: #ffffff !important;">istance and</span> 
-    <span style='font-size: 23px; font-weight: 800; color: #ffffff !important;'>O</span><span style="color: #ffffff !important;">nline</span> 
-    <span style='font-size: 23px; font-weight: 800; color: #ffffff !important;'>E</span><span style="color: #ffffff !important;">ducation</span>
-</div>
-
-<!-- ADVANCED TRUE 3D KINETIC ORB INTERFACE -->
-<div class="avatar-container">
-    <div class="core-glow-orb"></div>
-    <div class="satellite-orbit-wrapper">
-        <div class="satellite-orbit-ring"></div>
-    </div>
-</div>
-
-<div style="margin-bottom: 5px;">
-<div style="font-family: 'Jameel Noori Nastaleeq', 'Noto Nastaliq Urdu', sans-serif !important; font-weight: 500; font-size: 52px; color: #00e676; line-height: 1.1; direction: rtl;" lang="ur">
-معاوِن
-</div>
-<div style='font-family: "Helvetica Neue", Arial, sans-serif; font-weight: 900; font-size: 40px; margin-top: -5px; margin-bottom: 2px; letter-spacing: 1px;'>
-    <span style="color: #ffffff !important;">MAVIN</span>
-</div>
-</div>
-<div style='font-size: 14px; margin-top: 2px; font-weight: 500; letter-spacing: 0.5px;'>
-    <span style="color: rgba(255,255,255,0.95) !important;">(MANUU Virtual Interface)</span>
-</div>
-<div style='height: 3px; width: 140px; background: linear-gradient(90deg, #ffffff, #00e676); margin: 12px auto; border-radius: 2px;'></div>
-</div>
-""",
-    unsafe_allow_html=True
-)
-
-st.markdown(
-    """
-    <div class="stAlert" style="padding: 12px; margin-bottom: 15px;">
-        <span style="color:#ffffff !important;">💡</span> <strong style="color:#ffffff !important;">Language Support:</strong> <span style="color:#ffffff !important;">You can type your questions comfortably in English or</span> <span class="urdu-text" style="font-family:'Jameel Noori Nastaleeq', 'Noto Nastaliq Urdu', sans-serif !important; font-size:22px; color:#00e676; vertical-align:middle;">Urdu (اردو)</span>
-    </div>
-    """, 
-    unsafe_allow_html=True
-)
-
-if "show_analytics" not in st.session_state:
-    st.session_state.show_analytics = False
-
-
-# -----------------------------------
-# HARD-FORCED URDU INTERFACE LABELS
-# -----------------------------------
-
-st.markdown(
-    """
-    <label class="custom-label" style="font-size: 15px; font-weight: 500; margin-bottom: 6px; display: block;">
-        <span style="color: #ffffff !important;">How can MAVIN assist you today? / </span>
-        <span style="font-family:'Jameel Noori Nastaleeq', 'Noto Nastaliq Urdu', 'Urdu Typesetting', sans-serif !important; font-size:24px; color:#00e676; vertical-align: middle; direction: rtl;">
-            میں آپ کی کیا مدد کر سکتا ہوں؟
-        </span>
-    </label>
-    """, 
-    unsafe_allow_html=True
-)
-student_query = st.text_input("", placeholder="Type here in English or Urdu...", label_visibility="collapsed")
-
-
-# -----------------------------------
-# EXECUTION CONTEXT TRACKING
-# -----------------------------------
-
-if student_query:
-    if student_query.strip() == "manuuadmin2026":
-        st.session_state.show_analytics = not st.session_state.show_analytics
-        st.success(f"Diagnostics View Visibility Toggled to: {st.session_state.show_analytics}")
-    else:
-        processed_query = student_query
-        urdu_detected = is_urdu(student_query)
-        
-        with st.spinner("✨ MAVIN is processing..."):
-            if urdu_detected:
-                try:
-                    processed_query = GoogleTranslator(source='ur', target='en').translate(student_query)
-                except Exception as e:
-                    pass
-            
-            result = get_answer(processed_query)
-            save_log(processed_query, result, original_urdu=student_query if urdu_detected else "")
-
-        st.markdown(
-            f"""
-            <div class="answer-box">
-                <div class="answer-title">🤖 MAVIN:</div>
-                <div class="answer-text">{result["answer"]}</div>
-            </div>
-            """,
-            unsafe_allow_html=True
-        )
-
-        show_speech_button(result["answer"])
-
-        if st.session_state.show_analytics:
-            with st.expander("📊 Technical Analytics (Office Evaluation Mode Only)", expanded=True):
-                st.markdown(f"**Confidence Match Score:** `{result['score']}`")
-                st.markdown(f"**Mapped Database Intent:** `{result['intent']}`")
-                st.markdown(f"**Category:** `{result['category']}`")
-                st.markdown(f"**Reference Master Question:** *\"{result['matched_question']}\"*")
-                if urdu_detected:
-                    st.markdown(f"**Original Urdu Script Query:** *\"{student_query}\"*")
+            z-index: 9
