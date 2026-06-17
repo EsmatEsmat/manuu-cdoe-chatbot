@@ -160,7 +160,6 @@ def save_log(user_query, result, original_urdu=""):
         "Intent": result["intent"],
         "Confidence Score": result["score"]
     }
-    # FIXED: Repaired the broken pd. statement into a full DataFrame initialization
     log_df = pd.DataFrame([log_data])
     if os.path.exists(log_file):
         log_df.to_csv(log_file, mode="a", header=False, index=False, encoding="utf-8-sig")
@@ -243,59 +242,4 @@ st.markdown(
         padding-bottom: 3rem !important;
     }
     
-    /* Strict Text Color System Force Rules */
-    h1, h2, h3, h4, h5, h6, .stMarkdown p, .stMarkdown span, label {
-        color: #ffffff !important;
-    }
-    
-    body, p, span, div, label {
-        font-family: 'Helvetica Neue', Arial, sans-serif;
-    }
-    
-    /* Forced Nastaleeq Font Framework */
-    .urdu-text, [lang="ur"], .stAlert p, .custom-label span, div[data-baseweb="input"] input {
-        font-family: 'Jameel Noori Nastaleeq', 'Noto Nastaliq Urdu', 'Urdu Typesetting', 'Nastaliq', sans-serif !important;
-    }
-    
-    div[data-baseweb="input"] input {
-        font-size: 22px !important;
-        line-height: 1.8 !important;
-        direction: auto !important;
-    }
-    
-    .stAlert {
-        background-color: rgba(255, 255, 255, 0.15) !important;
-        border-left: 5px solid #00e676 !important;
-        border-radius: 14px;
-        backdrop-filter: blur(10px);
-    }
-    div.stTextInput > div > div > input {
-        border-radius: 14px; 
-        border: 2px solid #1a73e8; 
-        padding: 14px; 
-        background-color: #ffffff !important;
-        color: #1a252f !important;
-    }
-    .answer-box {
-        background-color: #ffffff !important; padding: 26px; border-radius: 18px;
-        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3); border-left: 6px solid #00e676; margin: 20px 0;
-    }
-    .answer-title { color: #1e3c72 !important; font-weight: 700; font-size: 19px; }
-    .answer-text { font-size: 16px; color: #1f2937 !important; line-height: 1.65; }
-    
-    /* QUANTUM CORE INTELLIGENCE SPHERE ANIMATION */
-    .avatar-container {
-        position: relative;
-        width: 100px;
-        height: 100px;
-        margin: 20px auto 10px auto;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-    
-    .quantum-sphere {
-        position: relative;
-        width: 46px;
-        height: 46px;
-        background: radial-gradient
+    /* Strict Text Color System
