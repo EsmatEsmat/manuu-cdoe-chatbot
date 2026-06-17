@@ -172,8 +172,8 @@ def show_speech_button(answer_text):
         f"""
         <div style="margin:0; padding:0; background:transparent; overflow:hidden;">
             <button onclick="speakAnswer()" style="
-                background-color:#00c853; color:white; border:none; padding:10px 16px;
-                border-radius:8px; cursor:pointer; font-weight:600; font-size:15px;">
+                background-color:#00e676; color:white; border:none; padding:10px 16px;
+                border-radius:8px; cursor:pointer; font-weight:600; font-size:15px; box-shadow: 0 2px 8px rgba(0,230,118,0.3);">
                 🔊 Listen to Answer / جواب سنیں
             </button>
         </div>
@@ -190,25 +190,22 @@ def show_speech_button(answer_text):
 
 
 # -----------------------------------
-# GLOBAL VISUAL STYLE ENGINE
+# BRIGHT & VIBRANT VISUAL ENGINE
 # -----------------------------------
 
 widget_css = ""
 if ui_mode == "Floating Website Widget Preview":
     widget_css = """
     .block-container {
-        max-width: 420px !important;
-        background: #ffffff !important;
-        border-radius: 20px !important;
-        padding: 20px !important;
-        box-shadow: 0 12px 40px rgba(0,0,0,0.5) !important;
-        margin: 40px auto !important;
-        border: 4px solid #1a73e8;
+        max-width: 430px !important;
+        background: rgba(255, 255, 255, 0.15) !important;
+        border-radius: 24px !important;
+        padding: 24px !important;
+        box-shadow: 0 20px 50px rgba(0,0,0,0.4) !important;
+        margin: 30px auto !important;
+        border: 2px solid rgba(255,255,255,0.25);
+        backdrop-filter: blur(15px);
     }
-    .stApp {
-        background: rgba(0, 0, 0, 0.4) !important;
-    }
-    p, h2, h1, span, label { color: #1a252f !important; }
     """
 
 st.markdown(
@@ -216,72 +213,89 @@ st.markdown(
     <style>
     @import url('https://fonts.cdnfonts.com/css/jameel-noori-nastaleeq');
     
+    /* Vibrant, Ultra-Bright Core Ambient Background Gradient */
     .stApp {{
-        background: linear-gradient(135deg, #1a73e8 0%, #0d47a1 50%, #00c853 100%) !important;
+        background: linear-gradient(135deg, #1e3c72 0%, #2a5298 40%, #00e676 100%) !important;
     }}
+    
     .block-container {{
         max-width: 750px !important;
-        padding-top: 1.5rem !important;
+        padding-top: 2rem !important;
         padding-bottom: 3rem !important;
     }}
     
-    /* Strict Typography Pipeline forcing Jameel Noori Nastaleeq dynamically everywhere */
-    body, *, p, span, div, label {{
+    /* Absolute Font Hierarchy Fix */
+    body, p, span, div, label {{
         font-family: 'Helvetica Neue', Arial, sans-serif;
     }}
     
-    .urdu-global, [lang="ur"], .stAlert p, .custom-label, .custom-label span {{
+    /* Forcing Jameel Noori Nastaleeq explicitly into text blocks and text inputs */
+    .urdu-text, [lang="ur"], .stAlert p, .custom-label span, div[data-baseweb="input"] input {{
         font-family: 'Jameel Noori Nastaleeq', 'Urdu Typesetting', 'Nastaliq', sans-serif !important;
     }}
     
+    /* Direct targeting of input box to render typed Urdu perfectly */
+    div[data-baseweb="input"] input {{
+        font-size: 22px !important;
+        line-height: 1.8 !important;
+        direction: auto !important;
+    }}
+    
     .stAlert {{
-        background-color: rgba(255, 255, 255, 0.12) !important;
-        border-left: 5px solid #00c853 !important;
+        background-color: rgba(255, 255, 255, 0.15) !important;
+        border-left: 5px solid #00e676 !important;
         border-radius: 14px;
+        backdrop-filter: blur(10px);
     }}
     div.stTextInput > div > div > input {{
-        border-radius: 14px; border: 2px solid #1a73e8; padding: 14px; font-size: 16px;
+        border-radius: 14px; 
+        border: 2px solid #1a73e8; 
+        padding: 14px; 
+        background-color: #ffffff !important;
+        color: #1a252f !important;
     }}
     .answer-box {{
         background-color: #ffffff !important; padding: 26px; border-radius: 18px;
-        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3); border-left: 6px solid #00c853; margin: 20px 0;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3); border-left: 6px solid #00e676; margin: 20px 0;
     }}
-    .answer-title {{ color: #0d47a1 !important; font-weight: 700; font-size: 19px; }}
+    .answer-title {{ color: #1e3c72 !important; font-weight: 700; font-size: 19px; }}
     .answer-text {{ font-size: 16px; color: #1f2937 !important; line-height: 1.65; }}
     
-    /* DESIGN VECTORS FOR THE KINETIC STICK FIGURE ROBOT (MAVIN-BOT) */
-    .robot-canvas {{
-        width: 80px; height: 90px; margin: 15px auto; position: relative;
-        animation: robotFloat 3s infinite ease-in-out;
+    /* RESTORED ANIMATION FOR THE MAVIN ROBOT ORB FIGURE */
+    .avatar-container {{
+        position: relative;
+        width: 80px;
+        height: 80px;
+        margin: 20px auto 10px auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }}
-    .robot-head {{
-        width: 32px; height: 26px; background: #ffffff; border-radius: 12px;
-        margin: 0 auto; position: relative; box-shadow: 0 0 15px #00c853;
-        border: 2px solid #0d47a1;
+    .core-glow-orb {{
+        width: 34px;
+        height: 34px;
+        background: radial-gradient(circle, #ffffff 0%, #00e676 80%);
+        border-radius: 50%;
+        box-shadow: 0 0 25px #00e676, 0 0 45px #1a73e8;
+        animation: orbPulse 2.5s infinite ease-in-out;
     }}
-    .robot-visor {{
-        width: 20px; height: 6px; background: #00c853; border-radius: 4px;
-        position: absolute; top: 9px; left: 6px; box-shadow: 0 0 8px #00c853;
+    .satellite-orbit-ring {{
+        position: absolute;
+        width: 74px;
+        height: 24px;
+        border: 3px solid rgba(255, 255, 255, 0.9);
+        border-radius: 50%;
+        transform: rotateX(65deg) rotateY(15deg);
+        animation: ringOrbitSpin 4s infinite linear;
+        box-shadow: 0 0 8px #ffffff;
     }}
-    .robot-neck {{
-        width: 6px; height: 8px; background: #1a73e8; margin: -2px auto 0 auto;
+    @keyframes orbPulse {{
+        0%, 100% {{ transform: scale(1); box-shadow: 0 0 20px #00e676, 0 0 35px #1e3c72; }}
+        50% {{ transform: scale(1.15); box-shadow: 0 0 35px #ffffff, 0 0 55px #00e676; }}
     }}
-    .robot-torso {{
-        width: 44px; height: 34px; background: rgba(255,255,255,0.9);
-        border-radius: 8px; margin: 0 auto; border: 2px solid #1a73e8;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.2); position: relative;
-    }}
-    .robot-core {{
-        width: 12px; height: 12px; background: #00c853; border-radius: 50%;
-        position: absolute; top: 10px; left: 16px; animation: coreBlink 1.5s infinite;
-    }}
-    @keyframes robotFloat {{
-        0%, 100% {{ transform: translateY(0); }}
-        50% {{ transform: translateY(-8px); }}
-    }}
-    @keyframes coreBlink {{
-        0%, 100% {{ opacity: 0.4; box-shadow: none; }}
-        50% {{ opacity: 1; box-shadow: 0 0 8px #00c853; }}
+    @keyframes ringOrbitSpin {{
+        0% { transform: rotateX(65deg) rotateY(15deg) rotateZ(0deg); }
+        100% { transform: rotateX(65deg) rotateY(15deg) rotateZ(360deg); }
     }}
     
     {widget_css}
@@ -297,41 +311,38 @@ st.markdown(
 
 st.markdown(
 """
-<div style="display: flex; justify-content: center; align-items: center; width: 100%; margin-bottom: 10px;">
+<div style="display: flex; justify-content: center; align-items: center; width: 100%; margin-bottom: 12px;">
     <img src="https://raw.githubusercontent.com/your-username/your-repo/main/manuu_logo.png" 
          onerror="this.src='https://upload.wikimedia.org/wikipedia/en/3/3b/Maulana_Azad_National_Urdu_University_Logo.png';" 
-         style="width: 130px; height: auto;" />
+         style="width: 135px; height: auto;" />
 </div>
 
 <div style='text-align: center; margin-top: 5px; margin-bottom: 25px;'>
-<h2 style='font-family: "Helvetica Neue", Arial, sans-serif; font-weight: 600; font-size: 21px; margin-bottom: 6px; letter-spacing: 0.5px;'>
+<h2 style='color: #ffffff !important; font-family: "Helvetica Neue", Arial, sans-serif; font-weight: 700; font-size: 22px; margin-bottom: 6px; letter-spacing: 0.5px;'>
 MAULANA AZAD NATIONAL URDU UNIVERSITY
 </h2>
-<p style='color: #f1c40f; font-size: 19px; font-weight: 500; letter-spacing: 0.5px; margin-top: 0; margin-bottom: 10px;'>
-<span style='font-size: 26px; font-weight: 800;'>C</span>entre for 
-<span style='font-size: 26px; font-weight: 800;'>D</span>istance & 
-<span style='font-size: 26px; font-weight: 800;'>O</span>nline 
-<span style='font-size: 26px; font-weight: 800;'>E</span>ducation
+<p style='color: #ffffff !important; font-family: "Helvetica Neue", Arial, sans-serif; font-size: 18px; font-weight: 500; letter-spacing: 0.5px; margin-top: 0; margin-bottom: 10px;'>
+Centre for Distance and Online Education
 </p>
 
-<div class="robot-canvas">
-    <div class="robot-head"><div class="robot-visor"></div></div>
-    <div class="robot-neck"></div>
-    <div class="robot-torso"><div class="robot-core"></div></div>
+<!-- MAVIN VISUAL KINETIC ORB INTERFACE -->
+<div class="avatar-container">
+    <div class="core-glow-orb"></div>
+    <div class="satellite-orbit-ring"></div>
 </div>
 
 <div style="margin-bottom: 10px;">
-<div style="font-family: 'Jameel Noori Nastaleeq', 'Urdu Typesetting', sans-serif !important; font-weight: 500; font-size: 56px; color: #00c853; line-height: 1.1; direction: rtl;" lang="ur">
+<div style="font-family: 'Jameel Noori Nastaleeq', 'Urdu Typesetting', sans-serif !important; font-weight: 500; font-size: 58px; color: #00e676; line-height: 1.1; direction: rtl;" lang="ur">
 معاوِن
 </div>
-<div style='font-family: "Helvetica Neue", Arial, sans-serif; font-weight: 900; font-size: 44px; margin-top: -5px; margin-bottom: 2px; letter-spacing: 1px;'>
+<div style='color: #ffffff !important; font-family: "Helvetica Neue", Arial, sans-serif; font-weight: 900; font-size: 46px; margin-top: -5px; margin-bottom: 2px; letter-spacing: 1px;'>
 MAVIN
 </div>
 </div>
-<p style='font-size: 16px; margin-top: 2px; font-weight: 500; letter-spacing: 0.5px; opacity: 0.9;'>
+<p style='color: rgba(255,255,255,0.95) !important; font-size: 16px; margin-top: 2px; font-weight: 500; letter-spacing: 0.5px;'>
 (MANUU Virtual Interface)
 </p>
-<div style='height: 3px; width: 160px; background: linear-gradient(90deg, #f1c40f, #00c853); margin: 15px auto; border-radius: 2px;'></div>
+<div style='height: 3px; width: 160px; background: linear-gradient(90deg, #ffffff, #00e676); margin: 15px auto; border-radius: 2px;'></div>
 </div>
 """,
     unsafe_allow_html=True
@@ -340,7 +351,7 @@ MAVIN
 st.markdown(
     """
     <div class="stAlert" style="padding: 15px; margin-bottom: 20px;">
-        <span style="color:#f1c40f;">💡</span> <strong>Language Support:</strong> You can type your questions comfortably in English or <span class="urdu-text" style="font-family:'Jameel Noori Nastaleeq', sans-serif !important; font-size:22px; color:#00c853; vertical-align:middle;">اردو (اردو)</span>
+        <span style="color:#ffffff;">💡</span> <strong style="color:#ffffff;">Language Support:</strong> <span style="color:#ffffff;">You can type your questions comfortably in English or</span> <span class="urdu-text" style="font-family:'Jameel Noori Nastaleeq', sans-serif !important; font-size:24px; color:#00e676; vertical-align:middle;">اردو (اردو)</span>
     </div>
     """, 
     unsafe_allow_html=True
@@ -356,16 +367,16 @@ if "show_analytics" not in st.session_state:
 
 st.markdown(
     """
-    <label class="custom-label" style="font-size: 16px; font-weight: 500; margin-bottom: 8px; display: block;">
+    <label class="custom-label" style="color: #ffffff !important; font-size: 16px; font-weight: 500; margin-bottom: 8px; display: block;">
         How can MAVIN assist you today? / 
-        <span style="font-family:'Jameel Noori Nastaleeq', 'Urdu Typesetting', sans-serif !important; font-size:25px; color:#00c853; vertical-align: middle; direction: rtl;">
+        <span style="font-family:'Jameel Noori Nastaleeq', 'Urdu Typesetting', sans-serif !important; font-size:26px; color:#00e676; vertical-align: middle; direction: rtl;">
             میں آپ کی کیا مدد کر سکتا ہوں؟
         </span>
     </label>
     """, 
     unsafe_allow_html=True
 )
-student_query = st.text_input("", placeholder="Type here...", label_visibility="collapsed")
+student_query = st.text_input("", placeholder="Type here in English or Urdu...", label_visibility="collapsed")
 
 
 # -----------------------------------
@@ -384,7 +395,7 @@ if student_query:
             if urdu_detected:
                 try:
                     processed_query = GoogleTranslator(source='ur', target='en').translate(student_query)
-                    st.toast(f"Translated query: {processed_query}")
+                    # Translation toast notification popup has been cleanly stripped out for a seamless UI
                 except Exception as e:
                     pass
             
