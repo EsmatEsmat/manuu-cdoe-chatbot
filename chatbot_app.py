@@ -317,7 +317,7 @@ st.markdown(
         animation: surfaceWarp 4s infinite linear;
     }
 
-    /* Outward ambient aura pulse tracking behind the sphere */
+    /* Outward ambient aura pulse (The Orbit) */
     .quantum-pulse-ring {
         position: absolute;
         width: 70px;
@@ -343,100 +343,10 @@ st.markdown(
         50% { opacity: 1; }
         100% { transform: scale(1.3); opacity: 0; }
     }
-    /* QUANTUM CORE INTELLIGENCE SPHERE ANIMATION */
-.avatar-container {
-    position: relative;
-    width: 100px;
-    height: 100px;
-    margin: 20px auto 10px auto;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.quantum-sphere {
-    position: relative;
-    width: 46px;
-    height: 46px;
-    background: radial-gradient(circle at 30% 30%, #ffffff 0%, #00e676 50%, #004d40 100%);
-    border-radius: 50%;
-    box-shadow: 0 0 25px rgba(0, 230, 118, 0.8), 0 0 45px rgba(30, 82, 152, 0.6);
-    animation: sphereGlow 3s infinite ease-in-out;
-    overflow: hidden;
-}
-
-/* The Orbiting Pulse Ring */
-.quantum-pulse-ring {
-    position: absolute;
-    width: 70px;
-    height: 70px;
-    border: 2px dashed rgba(0, 230, 118, 0.5);
-    border-radius: 50%;
-    animation: radarPulse 2.5s infinite cubic-bezier(0.215, 0.610, 0.355, 1);
-    z-index: -1;
-}
-
-@keyframes sphereGlow {
-    0%, 100% { transform: scale(1); box-shadow: 0 0 25px rgba(0, 230, 118, 0.8); }
-    50% { transform: scale(1.06); box-shadow: 0 0 35px rgba(255,255,255,0.9), 0 0 50px rgba(0,230,118,1); }
-}
-
-@keyframes radarPulse {
-    0% { transform: scale(0.6); opacity: 0; }
-    50% { opacity: 1; }
-    100% { transform: scale(1.3); opacity: 0; }
-}
     </style>
     """,
     unsafe_allow_html=True
 )
-
-if ui_mode == "Floating Website Widget Preview":
-    st.markdown(
-        """
-        <style>
-        .block-container {
-            max-width: 410px !important;
-            height: 82vh !important;
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%) !important;
-            border-radius: 20px !important;
-            padding: 20px !important;
-            box-shadow: 0 12px 40px rgba(0,0,0,0.6) !important;
-            border: 2px solid rgba(255,255,255,0.2);
-            backdrop-filter: blur(20px);
-            position: fixed !important;
-            bottom: 110px !important;
-            right: 30px !important;
-            z-index: 99999;
-            overflow-y: auto !important;
-        }
-        .stApp::after {
-            content: "💬";
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            width: 65px;
-            height: 65px;
-            background: #00e676;
-            border-radius: 50%;
-            box-shadow: 0 4px 15px rgba(0,230,118,0.4);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 30px;
-            cursor: pointer;
-            z-index: 100000;
-            animation: bubblePulse 2s infinite;
-        }
-        @keyframes bubblePulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.08); }
-        }
-        </style>
-        """,
-        unsafe_allow_html=True
-    )
-
 
 # -----------------------------------
 # GEOMETRICALLY CENTERED BRANDING HEADER
