@@ -28,7 +28,7 @@ from deep_translator import GoogleTranslator
 
 st.set_page_config(
     page_title="MAVIN - CDOE MANUU",
-    page_icon="manuu_logo.png",  # Configured to look for the official MANUU University emblem asset
+    page_icon="manuu_logo.png",  
     layout="centered"
 )
 
@@ -200,7 +200,7 @@ def save_log(user_query, result, original_urdu=""):
 
 
 # -----------------------------------
-# SPEECH ENGINE INTERFACE
+# SPEECH ENGINE INTERFACE (BUG-FREE RESYNC)
 # -----------------------------------
 
 def show_speech_button(answer_text):
@@ -212,20 +212,23 @@ def show_speech_button(answer_text):
         .replace("\n", " ")
     )
 
+    # Uses a zero-margin wrapper script to permanently kill the white ghosting container box bug
     components.html(
         f"""
-        <button onclick="speakAnswer()" style="
-            background-color:#00c853;
-            color:white;
-            border:none;
-            padding:10px 16px;
-            border-radius:8px;
-            cursor:pointer;
-            font-weight:600;
-            font-size:15px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);">
-            🔊 Listen to Answer / جواب سنیں
-        </button>
+        <div style="margin:0; padding:0; background:transparent; overflow:hidden;">
+            <button onclick="speakAnswer()" style="
+                background-color:#00c853;
+                color:white;
+                border:none;
+                padding:10px 16px;
+                border-radius:8px;
+                cursor:pointer;
+                font-weight:600;
+                font-size:15px;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.2);">
+                🔊 Listen to Answer / جواب سنیں
+            </button>
+        </div>
 
         <script>
         function speakAnswer() {{
@@ -237,7 +240,7 @@ def show_speech_button(answer_text):
         }}
         </script>
         """,
-        height=70
+        height=50
     )
 
 
@@ -260,6 +263,19 @@ st.markdown(
         padding-top: 1.5rem !important;
         padding-bottom: 3rem !important;
     }
+    
+    /* Strict global layout configuration forcing Jameel Noori Nastaleeq for all Urdu strings */
+    @import url('https://fonts.cdnfonts.com/css/jameel-noori-nastaleeq');
+    
+    body, *, .stAlert, div, input, p, span, label {
+        font-family: 'Helvetica Neue', Arial, sans-serif;
+    }
+    
+    /* Look for any Urdu script block pattern on page and map to Nastaleeq layout */
+    [lang="ur"], .urdu-text, .stAlert p, div.stTextInput label, div.stTextInput input::placeholder {
+        font-family: 'Jameel Noori Nastaleeq', 'Urdu Typesetting', 'Nastaliq', sans-serif !important;
+    }
+    
     .stAlert {
         background-color: rgba(255, 255, 255, 0.12) !important;
         border-left: 5px solid #00c853 !important;
@@ -303,9 +319,15 @@ st.markdown(
         border-radius: 10px;
     }
     
-    /* Global Nastaleeq font optimization for smooth script rendering */
-    .urdu-font {
-        font-family: 'Jameel Noori Nastaleeq', 'Alvi Lahori Nastaleeq', 'Urdu Typesetting', 'Nastaliq', sans-serif !important;
+    /* PREMIUM GLOW-PULSE TITLE KEYFRAME ANIMATION */
+    @keyframes titleGlowPulse {
+        0% { text-shadow: 0 0 10px rgba(0,200,83,0.2); transform: scale(1); }
+        50% { text-shadow: 0 0 25px rgba(0,200,83,0.8), 0 0 40px rgba(26,115,232,0.4); transform: scale(1.02); }
+        100% { text-shadow: 0 0 10px rgba(0,200,83,0.2); transform: scale(1); }
+    }
+    .animated-title {
+        display: inline-block;
+        animation: titleGlowPulse 4s infinite ease-in-out;
     }
     </style>
     """,
@@ -323,39 +345,48 @@ with col2:
 st.markdown(
 """
 <div style='text-align: center; margin-top: 15px; margin-bottom: 25px;'>
-<h2 style='color: #ffffff; font-family: "Helvetica Neue", Arial, sans-serif; font-weight: 600; font-size: 19px; margin-bottom: 4px;'>
+<h2 style='color: #ffffff; font-family: "Helvetica Neue", Arial, sans-serif; font-weight: 600; font-size: 21px; margin-bottom: 6px; letter-spacing: 0.5px;'>
 MAULANA AZAD NATIONAL URDU UNIVERSITY
 </h2>
-<p style='color: #f1c40f; font-size: 15px; font-weight: 500; letter-spacing: 0.5px; margin-top: 0; margin-bottom: 15px;'>
-<span style='font-size: 21px; font-weight: 700;'>C</span>entre for 
-<span style='font-size: 21px; font-weight: 700;'>D</span>istance & 
-<span style='font-size: 21px; font-weight: 700;'>O</span>nline 
-<span style='font-size: 21px; font-weight: 700;'>E</span>ducation
+<p style='color: #f1c40f; font-size: 19px; font-weight: 500; letter-spacing: 0.5px; margin-top: 0; margin-bottom: 20px;'>
+<span style='font-size: 26px; font-weight: 800;'>C</span>entre for 
+<span style='font-size: 26px; font-weight: 800;'>D</span>istance & 
+<span style='font-size: 26px; font-weight: 800;'>O</span>nline 
+<span style='font-size: 26px; font-weight: 800;'>E</span>ducation
 </p>
-<div class="urdu-font" style="font-weight: 500; font-size: 46px; color: #00c853; margin-bottom: -5px; line-height: 1.2;">
-مُعاوِن
+<div class="animated-title" style="margin-bottom: 10px;">
+<div style="font-family: 'Jameel Noori Nastaleeq', 'Urdu Typesetting', sans-serif !important; font-weight: 500; font-size: 56px; color: #00c853; line-height: 1.1; direction: rtl;" lang="ur">
+مَعاوِن
 </div>
-<h1 style='color: #ffffff; font-family: "Helvetica Neue", Arial, sans-serif; font-weight: 800; font-size: 34px; margin-top: 0; margin-bottom: 2px;'>
+<div style='color: #ffffff; font-family: "Helvetica Neue", Arial, sans-serif; font-weight: 900; font-size: 44px; margin-top: -5px; margin-bottom: 2px; letter-spacing: 1px;'>
 MAVIN
-</h1>
-<p style='color: rgba(255,255,255,0.85); font-size: 15px; margin-top: 0; font-weight: 500;'>
+</div>
+</div>
+<p style='color: rgba(255,255,255,0.9); font-size: 16px; margin-top: 2px; font-weight: 500; letter-spacing: 0.5px;'>
 (MANUU Virtual Interface)
 </p>
-<div style='height: 3px; width: 140px; background: linear-gradient(90deg, #f1c40f, #00c853); margin: 15px auto; border-radius: 2px;'></div>
+<div style='height: 3px; width: 160px; background: linear-gradient(90deg, #f1c40f, #00c853); margin: 15px auto; border-radius: 2px;'></div>
 </div>
 """,
     unsafe_allow_html=True
 )
 
-st.info("💡 **Language Support:** You can type your questions comfortably in English or Urdu (اردو)!")
+# Custom container class structure injects Nastaleeq dynamically into the info panel string text blocks
+st.markdown(
+    """
+    <div class="stAlert" style="padding: 15px; margin-bottom: 20px;">
+        <span style="color:#f1c40f;">💡</span> <strong>Language Support:</strong> You can type your questions comfortably in English or <span style="font-family:'Jameel Noori Nastaleeq', sans-serif; font-size:20px; vertical-align:middle; color:#00c853;">Urdu (اردو)</span>!
+    </div>
+    """, 
+    unsafe_allow_html=True
+)
 
 if "show_analytics" not in st.session_state:
     st.session_state.show_analytics = False
 
-student_query = st.text_input(
-    "How can MAVIN assist you today? / میں آپ کی کیا مدد کر سکتا ہوں؟",
-    placeholder="Type here..."
-)
+# Uses raw HTML generation targeting wrapper labels to preserve font styles across the text input bar
+st.markdown('<label style="color: white; font-size: 16px; font-weight: 500; margin-bottom: 8px; display: block;">How can MAVIN assist you today? / <span style="font-family:\'Jameel Noori Nastaleeq\', sans-serif; font-size:22px; color:#00c853; vertical-align: middle;">میں آپ کی کیا مدد کر سکتا ہوں؟</span></label>', unsafe_allow_html=True)
+student_query = st.text_input("", placeholder="Type here...", label_visibility="collapsed")
 
 if student_query:
     if student_query.strip() == "manuuadmin2026":
@@ -368,7 +399,6 @@ if student_query:
         with st.spinner("✨ MAVIN is processing..."):
             if urdu_detected:
                 try:
-                    # Automatically translate active Urdu input to English text
                     processed_query = GoogleTranslator(source='ur', target='en').translate(student_query)
                     st.toast(f"Translated query: {processed_query}")
                 except Exception as e:
