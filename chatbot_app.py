@@ -343,6 +343,49 @@ st.markdown(
         50% { opacity: 1; }
         100% { transform: scale(1.3); opacity: 0; }
     }
+    /* QUANTUM CORE INTELLIGENCE SPHERE ANIMATION */
+.avatar-container {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    margin: 20px auto 10px auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.quantum-sphere {
+    position: relative;
+    width: 46px;
+    height: 46px;
+    background: radial-gradient(circle at 30% 30%, #ffffff 0%, #00e676 50%, #004d40 100%);
+    border-radius: 50%;
+    box-shadow: 0 0 25px rgba(0, 230, 118, 0.8), 0 0 45px rgba(30, 82, 152, 0.6);
+    animation: sphereGlow 3s infinite ease-in-out;
+    overflow: hidden;
+}
+
+/* The Orbiting Pulse Ring */
+.quantum-pulse-ring {
+    position: absolute;
+    width: 70px;
+    height: 70px;
+    border: 2px dashed rgba(0, 230, 118, 0.5);
+    border-radius: 50%;
+    animation: radarPulse 2.5s infinite cubic-bezier(0.215, 0.610, 0.355, 1);
+    z-index: -1;
+}
+
+@keyframes sphereGlow {
+    0%, 100% { transform: scale(1); box-shadow: 0 0 25px rgba(0, 230, 118, 0.8); }
+    50% { transform: scale(1.06); box-shadow: 0 0 35px rgba(255,255,255,0.9), 0 0 50px rgba(0,230,118,1); }
+}
+
+@keyframes radarPulse {
+    0% { transform: scale(0.6); opacity: 0; }
+    50% { opacity: 1; }
+    100% { transform: scale(1.3); opacity: 0; }
+}
     </style>
     """,
     unsafe_allow_html=True
