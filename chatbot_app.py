@@ -160,4 +160,142 @@ def save_log(user_query, result, original_urdu=""):
         "Intent": result["intent"],
         "Confidence Score": result["score"]
     }
-    log_df = pd.
+    # FIXED: Repaired the broken pd. statement into a full DataFrame initialization
+    log_df = pd.DataFrame([log_data])
+    if os.path.exists(log_file):
+        log_df.to_csv(log_file, mode="a", header=False, index=False, encoding="utf-8-sig")
+    else:
+        log_df.to_csv(log_file, index=False, encoding="utf-8-sig")
+
+
+# -----------------------------------
+# HARD-FORCED IFRAME AUDIO ENGINE
+# -----------------------------------
+def show_speech_button(answer_text):
+    safe_answer = answer_text.replace(r"\\", r"\\\\").replace(r"'", r"\'").replace(r'"', r'\"').replace("\n", " ")
+    
+    html_template = """
+    <html>
+    <head>
+    <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;700&display=swap');
+    
+    .speech-btn {
+        background-color: #00e676; 
+        border: none; 
+        padding: 10px 18px;
+        border-radius: 8px; 
+        cursor: pointer; 
+        font-size: 15px; 
+        font-weight: 600;
+        box-shadow: 0 2px 8px rgba(0,230,118,0.3);
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-family: 'Helvetica Neue', Arial, sans-serif;
+        color: #ffffff !important;
+    }
+    .speech-btn span {
+        font-family: 'Jameel Noori Nastaleeq', 'Noto Nastaliq Urdu', 'Urdu Typesetting', sans-serif !important;
+        font-size: 20px;
+        font-weight: 500;
+        color: #ffffff !important;
+    }
+    </style>
+    </head>
+    <body style="margin:0; padding:0; background:transparent;">
+        <button class="speech-btn" onclick="speakAnswer()">
+            🔊 <span style="color:#ffffff !important;">Listen to Answer / </span><span>جواب سنیں</span>
+        </button>
+        
+        <script>
+        function speakAnswer() {
+            window.speechSynthesis.cancel();
+            var msg = new SpeechSynthesisUtterance('__SAFE_ANSWER__');
+            msg.lang = 'en-IN'; msg.rate = 0.9;
+            window.speechSynthesis.speak(msg);
+        }
+        </script>
+    </body>
+    </html>
+    """.replace("__SAFE_ANSWER__", safe_answer)
+    
+    components.html(html_template, height=55)
+
+
+# -----------------------------------
+# BRIGHT & VIBRANT VISUAL ENGINE
+# -----------------------------------
+
+st.markdown(
+    """
+    <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;700&display=swap');
+    
+    /* Radiant Visual Canvas Background */
+    .stApp {
+        background: linear-gradient(135deg, #1e3c72 0%, #2a5298 40%, #00e676 100%) !important;
+    }
+    
+    .block-container {
+        max-width: 750px !important;
+        padding-top: 2rem !important;
+        padding-bottom: 3rem !important;
+    }
+    
+    /* Strict Text Color System Force Rules */
+    h1, h2, h3, h4, h5, h6, .stMarkdown p, .stMarkdown span, label {
+        color: #ffffff !important;
+    }
+    
+    body, p, span, div, label {
+        font-family: 'Helvetica Neue', Arial, sans-serif;
+    }
+    
+    /* Forced Nastaleeq Font Framework */
+    .urdu-text, [lang="ur"], .stAlert p, .custom-label span, div[data-baseweb="input"] input {
+        font-family: 'Jameel Noori Nastaleeq', 'Noto Nastaliq Urdu', 'Urdu Typesetting', 'Nastaliq', sans-serif !important;
+    }
+    
+    div[data-baseweb="input"] input {
+        font-size: 22px !important;
+        line-height: 1.8 !important;
+        direction: auto !important;
+    }
+    
+    .stAlert {
+        background-color: rgba(255, 255, 255, 0.15) !important;
+        border-left: 5px solid #00e676 !important;
+        border-radius: 14px;
+        backdrop-filter: blur(10px);
+    }
+    div.stTextInput > div > div > input {
+        border-radius: 14px; 
+        border: 2px solid #1a73e8; 
+        padding: 14px; 
+        background-color: #ffffff !important;
+        color: #1a252f !important;
+    }
+    .answer-box {
+        background-color: #ffffff !important; padding: 26px; border-radius: 18px;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3); border-left: 6px solid #00e676; margin: 20px 0;
+    }
+    .answer-title { color: #1e3c72 !important; font-weight: 700; font-size: 19px; }
+    .answer-text { font-size: 16px; color: #1f2937 !important; line-height: 1.65; }
+    
+    /* QUANTUM CORE INTELLIGENCE SPHERE ANIMATION */
+    .avatar-container {
+        position: relative;
+        width: 100px;
+        height: 100px;
+        margin: 20px auto 10px auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .quantum-sphere {
+        position: relative;
+        width: 46px;
+        height: 46px;
+        background: radial-gradient
