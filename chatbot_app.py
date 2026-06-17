@@ -181,7 +181,6 @@ def show_speech_button(answer_text):
         
         .speech-btn {{
             background-color: #00e676; 
-            color: #ffffff !important; 
             border: none; 
             padding: 10px 18px;
             border-radius: 8px; 
@@ -193,6 +192,7 @@ def show_speech_button(answer_text):
             align-items: center;
             gap: 6px;
             font-family: 'Helvetica Neue', Arial, sans-serif;
+            color: #ffffff !important;
         }}
         .speech-btn span {{
             font-family: 'Jameel Noori Nastaleeq', 'Noto Nastaliq Urdu', 'Urdu Typesetting', sans-serif !important;
@@ -204,7 +204,7 @@ def show_speech_button(answer_text):
         </head>
         <body style="margin:0; padding:0; background:transparent;">
             <button class="speech-btn" onclick="speakAnswer()">
-                🔊 Listen to Answer / <span>جواب سنیں</span>
+                🔊 <span style="color:#ffffff !important;">Listen to Answer / </span><span>جواب سنیں</span>
             </button>
             
             <script>
@@ -239,6 +239,11 @@ st.markdown(
         max-width: 750px !important;
         padding-top: 2rem !important;
         padding-bottom: 3rem !important;
+    }
+    
+    /* Strict Text Color System Force Rules */
+    h1, h2, h3, h4, h5, h6, .stMarkdown p, .stMarkdown span, label {
+        color: #ffffff !important;
     }
     
     body, p, span, div, label {
@@ -379,12 +384,12 @@ st.markdown(
 
 <div style='text-align: center; margin-top: 5px; margin-bottom: 20px;'>
 
-<!-- INLINE COLOR ENGINE: Forced to bypass parent theme variables directly -->
-<div style='color: #ffffff !important; font-family: "Helvetica Neue", Arial, sans-serif; font-weight: 700; font-size: 19px; margin-bottom: 8px; letter-spacing: 0.5px; line-height: 1.3;'>
+<!-- FIXED INLINE PROTECTION: Forces headers to always remain white -->
+<div style='font-family: "Helvetica Neue", Arial, sans-serif; font-weight: 700; font-size: 19px; margin-bottom: 8px; letter-spacing: 0.5px; line-height: 1.3;'>
     <span style="color: #ffffff !important;">MAULANA AZAD NATIONAL URDU UNIVERSITY</span>
 </div>
 
-<div style='color: #ffffff !important; font-family: "Helvetica Neue", Arial, sans-serif; font-size: 15px; font-weight: 500; letter-spacing: 0.5px; margin-top: 0; margin-bottom: 10px; line-height: 1.4;'>
+<div style='font-family: "Helvetica Neue", Arial, sans-serif; font-size: 15px; font-weight: 500; letter-spacing: 0.5px; margin-top: 0; margin-bottom: 10px; line-height: 1.4;'>
     <span style='font-size: 23px; font-weight: 800; color: #ffffff !important;'>C</span><span style="color: #ffffff !important;">entre for</span> 
     <span style='font-size: 23px; font-weight: 800; color: #ffffff !important;'>D</span><span style="color: #ffffff !important;">istance and</span> 
     <span style='font-size: 23px; font-weight: 800; color: #ffffff !important;'>O</span><span style="color: #ffffff !important;">nline</span> 
@@ -401,12 +406,12 @@ st.markdown(
 <div style="font-family: 'Jameel Noori Nastaleeq', 'Noto Nastaliq Urdu', sans-serif !important; font-weight: 500; font-size: 52px; color: #00e676; line-height: 1.1; direction: rtl;" lang="ur">
 معاوِن
 </div>
-<div style='color: #ffffff !important; font-family: "Helvetica Neue", Arial, sans-serif; font-weight: 900; font-size: 40px; margin-top: -5px; margin-bottom: 2px; letter-spacing: 1px;'>
-MAVIN
+<div style='font-family: "Helvetica Neue", Arial, sans-serif; font-weight: 900; font-size: 40px; margin-top: -5px; margin-bottom: 2px; letter-spacing: 1px;'>
+    <span style="color: #ffffff !important;">MAVIN</span>
 </div>
 </div>
-<div style='color: rgba(255,255,255,0.95) !important; font-size: 14px; margin-top: 2px; font-weight: 500; letter-spacing: 0.5px;'>
-(MANUU Virtual Interface)
+<div style='font-size: 14px; margin-top: 2px; font-weight: 500; letter-spacing: 0.5px;'>
+    <span style="color: rgba(255,255,255,0.95) !important;">(MANUU Virtual Interface)</span>
 </div>
 <div style='height: 3px; width: 140px; background: linear-gradient(90deg, #ffffff, #00e676); margin: 12px auto; border-radius: 2px;'></div>
 </div>
@@ -417,7 +422,7 @@ MAVIN
 st.markdown(
     """
     <div class="stAlert" style="padding: 12px; margin-bottom: 15px;">
-        <span style="color:#ffffff;">💡</span> <strong style="color:#ffffff;">Language Support:</strong> <span style="color:#ffffff;">You can type your questions comfortably in English or</span> <span class="urdu-text" style="font-family:'Jameel Noori Nastaleeq', 'Noto Nastaliq Urdu', sans-serif !important; font-size:22px; color:#00e676; vertical-align:middle;">Urdu (اردو)</span>
+        <span style="color:#ffffff !important;">💡</span> <strong style="color:#ffffff !important;">Language Support:</strong> <span style="color:#ffffff !important;">You can type your questions comfortably in English or</span> <span class="urdu-text" style="font-family:'Jameel Noori Nastaleeq', 'Noto Nastaliq Urdu', sans-serif !important; font-size:22px; color:#00e676; vertical-align:middle;">Urdu (اردو)</span>
     </div>
     """, 
     unsafe_allow_html=True
@@ -433,8 +438,8 @@ if "show_analytics" not in st.session_state:
 
 st.markdown(
     """
-    <label class="custom-label" style="color: #ffffff !important; font-size: 15px; font-weight: 500; margin-bottom: 6px; display: block;">
-        How can MAVIN assist you today? / 
+    <label class="custom-label" style="font-size: 15px; font-weight: 500; margin-bottom: 6px; display: block;">
+        <span style="color: #ffffff !important;">How can MAVIN assist you today? / </span>
         <span style="font-family:'Jameel Noori Nastaleeq', 'Noto Nastaliq Urdu', 'Urdu Typesetting', sans-serif !important; font-size:24px; color:#00e676; vertical-align: middle; direction: rtl;">
             میں آپ کی کیا مدد کر سکتا ہوں؟
         </span>
