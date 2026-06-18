@@ -604,7 +604,7 @@ show_speech_button(final_answer) # The speech button will now also speak the Urd
         
         # ... (rest of your analytics code)
 
-        if st.session_state.show_analytics:
+if st.session_state.show_analytics:
             with st.expander("📊 Technical Analytics (Office Evaluation Mode Only)", expanded=True):
                 st.markdown(f"**Confidence Match Score:** `{result['score']}`")
                 st.markdown(f"**Mapped Database Intent:** `{result['intent']}`")
