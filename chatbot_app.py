@@ -15,7 +15,7 @@ from deep_translator import GoogleTranslator
 st.set_page_config(page_title="MAVIN - CDOE MANUU", page_icon="manuu_logo.png", layout="centered")
 
 # -----------------------------------
-# FULL CSS BLOCK (INCLUDING FONTS & PULSE)
+# FULL CSS BLOCK - FIXED ALIGNMENT
 # -----------------------------------
 st.markdown("""
 <style>
@@ -23,17 +23,21 @@ st.markdown("""
     @import url('https://fonts.googleapis.com/css2?family=Jameel+Noori+Nastaleeq&display=swap');
 
     .stApp { background: linear-gradient(135deg, #1e3c72 0%, #2a5298 40%, #00e676 100%) !important; }
-    
-    /* Global Styles */
     h1, h2, h3, p, div, span, label { color: #ffffff !important; }
     
-    /* Forced Font for Inputs and Chat Bubbles */
-    .stChatMessage, .stChatInput textarea, .stTextInput > div > div > input, div[data-testid="stMarkdown"] p {
+    /* Apply Nastaleeq font and RTL specifically to containers containing Urdu */
+    .stChatMessage, .stChatInput textarea, div[data-testid="stMarkdown"] p {
         font-family: 'Jameel Noori Nastaleeq', 'Noto Nastaliq Urdu', serif !important;
-        font-size: 24px !important;
-        direction: rtl;
+        font-size: 22px !important;
     }
     
+    /* Logic: If text contains Urdu characters, force RTL alignment */
+    .stChatMessage[data-testid="stChatMessage"]:has(p[lang="ur"]),
+    .stChatMessage[data-testid="stChatMessage"]:has(p:lang(ur)) {
+        direction: rtl !important;
+        text-align: right !important;
+    }
+
     .urdu-title { font-family: 'Jameel Noori Nastaleeq', serif !important; font-size: 52px !important; color: #00e676 !important; }
 
     /* QUANTUM CORE & DOTTED PULSE AURA */
@@ -67,7 +71,7 @@ st.markdown('''
 ''', unsafe_allow_html=True)
 
 # -----------------------------------
-# BACKEND & LOGIC
+# LOGIC
 # -----------------------------------
 @st.cache_resource
 def load_model(): return SentenceTransformer("all-MiniLM-L6-v2")
@@ -88,10 +92,10 @@ if prompt := st.chat_input("Type here..."):
     with st.chat_message("user"): st.markdown(prompt)
     with st.chat_message("assistant"):
         cleaned = prompt.lower().strip()
+        urdu = is_urdu(prompt)
         if any(greet in cleaned for greet in ["hi", "hello", "salam", "adaab", "hey"]):
-            ans = "Adaab! Welcome to MAVIN, your official assistant for MANUU CDOE. / آداب! مانو CDOE کے معاون میں خوش آمدید۔"
+            ans = "Adaab! Welcome to MAVIN." if not urdu else "آداب! مانو CDOE کے معاون میں خوش آمدید۔"
         else:
-            urdu = is_urdu(prompt)
             q = GoogleTranslator(source='ur', target='en').translate(prompt) if urdu else prompt
             val, idx = util.cos_sim(model.encode(q, convert_to_tensor=True), faq_embs_main).max(dim=1)
             ans = faq.iloc[int(idx)]["Answer"] if val > 0.4 else "I can only answer MANUU CDOE related questions."
