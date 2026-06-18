@@ -15,18 +15,23 @@ from deep_translator import GoogleTranslator
 st.set_page_config(page_title="MAVIN - CDOE MANUU", page_icon="manuu_logo.png", layout="centered")
 
 # -----------------------------------
-# FULL ORIGINAL VISUAL ENGINE (WITH PULSE)
+# FULL CSS BLOCK (INCLUDING FONTS & PULSE)
 # -----------------------------------
 st.markdown("""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Jameel+Noori+Nastaleeq&display=swap');
 
     .stApp { background: linear-gradient(135deg, #1e3c72 0%, #2a5298 40%, #00e676 100%) !important; }
-    h1, h2, h3, p, div, span, label, .stMarkdown { color: #ffffff !important; }
-
-    .stChatMessage, .stTextInput > div > div > input, .stChatInput textarea {
+    
+    /* Global Styles */
+    h1, h2, h3, p, div, span, label { color: #ffffff !important; }
+    
+    /* Forced Font for Inputs and Chat Bubbles */
+    .stChatMessage, .stChatInput textarea, .stTextInput > div > div > input, div[data-testid="stMarkdown"] p {
         font-family: 'Jameel Noori Nastaleeq', 'Noto Nastaliq Urdu', serif !important;
         font-size: 24px !important;
+        direction: rtl;
     }
     
     .urdu-title { font-family: 'Jameel Noori Nastaleeq', serif !important; font-size: 52px !important; color: #00e676 !important; }
