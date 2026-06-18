@@ -18,6 +18,8 @@ from sentence_transformers import SentenceTransformer
 from sklearn.metrics.pairwise import cosine_similarity
 from rapidfuzz import fuzz
 from deep_translator import GoogleTranslator
+if "messages" not in st.session_state:
+    st.session_state.messages = []
 
 
 # -----------------------------------
@@ -530,52 +532,73 @@ if ui_mode == "Floating Website Widget Preview":
     )
 
 # -----------------------------------
-# EXECUTION CONTEXT TRACKING
+# INITIALIZE CHAT HISTORY
 # -----------------------------------
+if "messages" not in st.session_state:
+    # Initialize with the formal greeting
+    greeting = "Adaab! Welcome to MAVIN, your official assistant for MANUU CDOE. How can I help you today?\n\nآداب! مانو (MANUU) CDOE کے معاون میں آپ کا خیرمقدم ہے۔ میں آپ کی کیا مدد کر سکتا ہوں؟"
+    st.session_state.messages = [{"role": "assistant", "content": greeting}]
 
-if student_query:
-    if student_query.strip() == "manuuadmin2026":
-        st.session_state.show_analytics = not st.session_state.show_analytics
-        st.success(f"Diagnostics View Visibility Toggled to: {st.session_state.show_analytics}")
-    else:
-        processed_query = student_query
-        urdu_detected = is_urdu(student_query)
-        
-        with st.spinner("✨ MAVIN is processing..."):
-            # 1. Translate Urdu to English for the engine
+# -----------------------------------
+# DISPLAY CHAT HISTORY
+# -----------------------------------
+for message in st.session_state.messages:
+    # We use st.chat_message for the "bubble" effect
+    with st.chat_message(message["role"]):
+        st.markdown(message["content"])
+
+# -----------------------------------
+# CHAT INPUT & LOGIC
+# -----------------------------------
+if prompt := st.chat_input("Type your question here..."):
+    # 1. Display User Message
+    st.session_state.messages.append({"role": "user", "content": prompt})
+    with st.chat_message("user"):
+        st.markdown(prompt)
+
+    # 2. Generate MAVIN Response
+    with st.chat_message("assistant"):
+        with st.spinner("✨ MAVIN is thinking..."):
+            
+            # --- PROCESSING LOGIC ---
+            processed_query = prompt
+            urdu_detected = is_urdu(prompt)
+            
+            # Translate if needed
             if urdu_detected:
                 try:
-                    processed_query = GoogleTranslator(source='ur', target='en').translate(student_query)
+                    processed_query = GoogleTranslator(source='ur', target='en').translate(prompt)
                 except Exception:
                     pass
             
-            # 2. Get answer from the engine
+            # Get Answer
             result = get_answer(processed_query)
             
-            # 3. Translate answer back to Urdu if needed
+            # Translate answer back to Urdu if needed
             final_answer = result["answer"]
             if urdu_detected:
                 try:
-                    # Translate the English answer back to Urdu
                     final_answer = GoogleTranslator(source='en', target='ur').translate(final_answer)
                 except Exception:
                     pass
             
-            # Save logs (using the original query)
-            save_log(processed_query, result, original_urdu=student_query if urdu_detected else "")
+            # Save logs
+            save_log(processed_query, result, original_urdu=prompt if urdu_detected else "")
+            
+            # Display Final Answer
+            st.markdown(final_answer)
+            show_speech_button(final_answer)
+            
+            # 3. Store Assistant response in history
+            st.session_state.messages.append({"role": "assistant", "content": final_answer})
 
-        # 4. Display result with Urdu text
-        st.markdown(
-            '''
-            <div class="answer-box">
-                <div class="answer-title">🤖 MAVIN:</div>
-                <div class="answer-text" style="font-family: 'Jameel Noori Nastaleeq', 'Noto Nastaliq Urdu', sans-serif !important; font-size: 20px; direction: rtl;">
-                    {}
-                </div>
-            </div>
-            '''.format(final_answer),
-            unsafe_allow_html=True
-        )
+# -----------------------------------
+# ADMIN DIAGNOSTICS (Moved to bottom)
+# -----------------------------------
+if st.session_state.get("show_analytics", False):
+    st.write("---")
+    st.markdown("### 📊 Diagnostic Trace")
+    st.json(result) # Showing the raw dictionary result for the last query
 
         show_speech_button(final_answer) # The speech button will now also speak the Urdu answer!
         
