@@ -52,6 +52,19 @@ def load_model():
 @st.cache_data
 def load_faq():
     faq = pd.read_csv("master_faq.csv", encoding="latin1")
+    
+    # We don't merge them into one 'search_text' anymore.
+    # We keep them separate for independent precision matching.
+    return faq
+
+# Load into global variables
+model = load_model()
+faq = load_faq()
+
+# Pre-calculate embeddings for the three target columns
+faq_embs_main = model.encode(faq["Main Question"].fillna("").tolist(), convert_to_tensor=True)
+faq_embs_alt = model.encode(faq["Alternate Questions"].fillna("").tolist(), convert_to_tensor=True)
+faq_embs_real = model.encode(faq["Real Student Variants"].fillna("").tolist(), convert_to_tensor=True)
 
     def clean_text(text):
         text = str(text).lower()
@@ -116,38 +129,61 @@ def handle_keyword_overrides(cleaned_question):
 
 def get_answer(user_question):
     cleaned_question = clean_text(user_question)
+    
+    # 1. Greeting Interceptor
+    greetings = ["salam", "adaab", "hi", "hello", "hey", "namaste"]
+    if any(greet in cleaned_question for greet in greetings):
+        return {
+            "answer": "Adaab! Welcome to MAVIN, your official assistant for MANUU CDOE. How can I help you today?\n\nآداب! مانو (MANUU) CDOE کے معاون میں آپ کا خیرمقدَم ہے۔ میں آپ کی کیا مدد کر سکتا ہوں؟",
+            "matched_question": "Greeting",
+            "category": "General",
+            "intent": "Greeting",
+            "score": 1.0
+        }
+
+    # 2. Keyword Overrides
     direct_match = handle_keyword_overrides(cleaned_question)
     if direct_match:
         return direct_match
 
-    question_embedding = model.encode([cleaned_question], convert_to_tensor=False)
-    semantic_scores = cosine_similarity(question_embedding, faq_embeddings)[0]
+    # 3. Multi-Shot Semantic Search
+    user_emb = model.encode(cleaned_question, convert_to_tensor=True)
+    
+    # Get scores for all three columns
+    scores_main = util.cos_sim(user_emb, faq_embs_main)[0]
+    scores_alt = util.cos_sim(user_emb, faq_embs_alt)[0]
+    scores_real = util.cos_sim(user_emb, faq_embs_real)[0]
+    
+    # Combine and find the single best match index
+    best_score_main, idx_main = scores_main.max(dim=0)
+    best_score_alt, idx_alt = scores_alt.max(dim=0)
+    best_score_real, idx_real = scores_real.max(dim=0)
+    
+    # Determine the absolute best across all 3
+    final_scores = [(best_score_main, idx_main, 'Main'), 
+                    (best_score_alt, idx_alt, 'Alt'), 
+                    (best_score_real, idx_real, 'Real')]
+    best_score, best_idx, source = max(final_scores, key=lambda x: x[0])
+    
+    row = faq.iloc[best_idx.item()]
+    best_score = best_score.item()
 
-    combined_scores = []
-    for i, row_text in enumerate(faq["search_text"]):
-        combined_scores.append(float(semantic_scores[i]))
-
-    best_index = max(range(len(combined_scores)), key=combined_scores.__getitem__)
-    best_score = combined_scores[best_index]
-    row = faq.iloc[best_index]
-
-    safety_check_score = (0.70 * best_score) + (0.30 * (fuzz.WRatio(cleaned_question, row["search_text"]) / 100))
-
-    if safety_check_score < 0.45:
+    # 4. Safety Guardrail
+    if best_score < 0.55: # Higher threshold for better precision
         return {
             "answer": "I am sorry, I can only answer MANUU CDOE related questions. Please refine your query with more specific terms.",
             "matched_question": "No confident match",
             "category": "-",
             "intent": "-",
-            "score": round(float(safety_check_score), 3)
+            "score": round(best_score, 3)
         }
 
     return {
         "answer": row["Answer"],
         "matched_question": row["Main Question"],
-        "category": row["Category"] if "Category" in row else "-",
-        "intent": row["Intent"] if "Intent" in row else "-",
-        "score": round(float(best_score), 3)
+        "category": row.get("Category", "-"),
+        "intent": row.get("Intent", "-"),
+        "score": round(best_score, 3)
     }
 
 def save_log(user_query, result, original_urdu=""):
@@ -502,26 +538,44 @@ if student_query:
         urdu_detected = is_urdu(student_query)
         
         with st.spinner("✨ MAVIN is processing..."):
+            # 1. Translate Urdu to English for the engine
             if urdu_detected:
                 try:
                     processed_query = GoogleTranslator(source='ur', target='en').translate(student_query)
-                except Exception as e:
+                except Exception:
                     pass
             
+            # 2. Get answer from the engine
             result = get_answer(processed_query)
+            
+            # 3. Translate answer back to Urdu if needed
+            final_answer = result["answer"]
+            if urdu_detected:
+                try:
+                    # Translate the English answer back to Urdu
+                    final_answer = GoogleTranslator(source='en', target='ur').translate(final_answer)
+                except Exception:
+                    pass
+            
+            # Save logs (using the original query)
             save_log(processed_query, result, original_urdu=student_query if urdu_detected else "")
 
+        # 4. Display result with Urdu text
         st.markdown(
             '''
             <div class="answer-box">
                 <div class="answer-title">🤖 MAVIN:</div>
-                <div class="answer-text">{}</div>
+                <div class="answer-text" style="font-family: 'Jameel Noori Nastaleeq', 'Noto Nastaliq Urdu', sans-serif !important; font-size: 20px; direction: rtl;">
+                    {}
+                </div>
             </div>
-            '''.format(result["answer"]),
+            '''.format(final_answer),
             unsafe_allow_html=True
         )
 
-        show_speech_button(result["answer"])
+        show_speech_button(final_answer) # The speech button will now also speak the Urdu answer!
+        
+        # ... (rest of your analytics code)
 
         if st.session_state.show_analytics:
             with st.expander("📊 Technical Analytics (Office Evaluation Mode Only)", expanded=True):
