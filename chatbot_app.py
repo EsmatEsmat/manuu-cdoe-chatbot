@@ -52,11 +52,7 @@ def load_model():
 @st.cache_data
 def load_faq():
     faq = pd.read_csv("master_faq.csv", encoding="latin1")
-    
-    # We don't merge them into one 'search_text' anymore.
-    # We keep them separate for independent precision matching.
     return faq
-
 # Load into global variables
 model = load_model()
 faq = load_faq()
@@ -67,10 +63,10 @@ faq_embs_alt = model.encode(faq["Alternate Questions"].fillna("").tolist(), conv
 faq_embs_real = model.encode(faq["Real Student Variants"].fillna("").tolist(), convert_to_tensor=True)
 
 def clean_text(text):
-        text = str(text).lower()
-        text = re.sub(r"[^\w\s]", " ", text)
-        text = re.sub(r"\s+", " ", text).strip()
-        return text
+    text = str(text).lower()
+    text = re.sub(r"[^\w\s]", " ", text)
+    text = re.sub(r"\s+", " ", text).strip()
+    return text
 
     faq["search_text"] = (
         faq["Main Question"].fillna("") + " " +
