@@ -66,7 +66,7 @@ faq_embs_main = model.encode(faq["Main Question"].fillna("").tolist(), convert_t
 faq_embs_alt = model.encode(faq["Alternate Questions"].fillna("").tolist(), convert_to_tensor=True)
 faq_embs_real = model.encode(faq["Real Student Variants"].fillna("").tolist(), convert_to_tensor=True)
 
-    def clean_text(text):
+def clean_text(text):
         text = str(text).lower()
         text = re.sub(r"[^\w\s]", " ", text)
         text = re.sub(r"\s+", " ", text).strip()
