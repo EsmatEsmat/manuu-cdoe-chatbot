@@ -93,10 +93,10 @@ def is_urdu(text):
 model = load_model()
 faq = load_faq()
 
-faq_embeddings = model.encode(
-    faq["search_text"].tolist(),
-    convert_to_tensor=False
-)
+# ✅ REPLACE WITH THIS:
+faq_embs_main = model.encode(faq["Main Question"].fillna("").tolist(), convert_to_tensor=True)
+faq_embs_alt = model.encode(faq["Alternate Questions"].fillna("").tolist(), convert_to_tensor=True)
+faq_embs_real = model.encode(faq["Real Student Variants"].fillna("").tolist(), convert_to_tensor=True)
 
 
 # -----------------------------------
