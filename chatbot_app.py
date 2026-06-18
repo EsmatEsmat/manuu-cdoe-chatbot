@@ -93,11 +93,13 @@ def is_urdu(text):
 model = load_model()
 faq = load_faq()
 
-# ✅ REPLACE WITH THIS:
+# -----------------------------------
+# PRE-CALCULATE MULTI-SHOT EMBEDDINGS
+# -----------------------------------
+# We pre-calculate these so the app stays fast
 faq_embs_main = model.encode(faq["Main Question"].fillna("").tolist(), convert_to_tensor=True)
 faq_embs_alt = model.encode(faq["Alternate Questions"].fillna("").tolist(), convert_to_tensor=True)
 faq_embs_real = model.encode(faq["Real Student Variants"].fillna("").tolist(), convert_to_tensor=True)
-
 
 # -----------------------------------
 # CORE BACKEND MATCHING ENGINE
@@ -127,10 +129,10 @@ def get_answer(user_question):
     cleaned_question = clean_text(user_question)
     
     # 1. Greeting Interceptor
-    greetings = ["salam", "adaab", "hi", "hello", "hey", "namaste"]
+    greetings = ["salam", "adaab", "hi", "hello", "hey", "namaste", "assalam"]
     if any(greet in cleaned_question for greet in greetings):
         return {
-            "answer": "Adaab! Welcome to MAVIN, your official assistant for MANUU CDOE. How can I help you today?\n\nآداب! مانو (MANUU) CDOE کے معاون میں آپ کا خیرمقدَم ہے۔ میں آپ کی کیا مدد کر سکتا ہوں؟",
+            "answer": "Adaab! Welcome to MAVIN, your official assistant for MANUU CDOE. How can I help you today?\n\nآداب! مانو (MANUU) CDOE کے معاون میں آپ کا خیرمقدم ہے۔ میں آپ کی کیا مدد کر سکتا ہوں؟",
             "matched_question": "Greeting",
             "category": "General",
             "intent": "Greeting",
@@ -150,22 +152,21 @@ def get_answer(user_question):
     scores_alt = util.cos_sim(user_emb, faq_embs_alt)[0]
     scores_real = util.cos_sim(user_emb, faq_embs_real)[0]
     
-    # Combine and find the single best match index
-    best_score_main, idx_main = scores_main.max(dim=0)
-    best_score_alt, idx_alt = scores_alt.max(dim=0)
-    best_score_real, idx_real = scores_real.max(dim=0)
+    # Find the max score in each column
+    val_m, idx_m = scores_main.max(dim=0)
+    val_a, idx_a = scores_alt.max(dim=0)
+    val_r, idx_r = scores_real.max(dim=0)
     
     # Determine the absolute best across all 3
-    final_scores = [(best_score_main, idx_main, 'Main'), 
-                    (best_score_alt, idx_alt, 'Alt'), 
-                    (best_score_real, idx_real, 'Real')]
-    best_score, best_idx, source = max(final_scores, key=lambda x: x[0])
+    final_scores = [(val_m, idx_m), (val_a, idx_a), (val_r, idx_r)]
+    best_score_tensor, best_idx_tensor = max(final_scores, key=lambda x: x[0])
     
-    row = faq.iloc[best_idx.item()]
-    best_score = best_score.item()
+    best_score = float(best_score_tensor)
+    best_idx = int(best_idx_tensor)
+    row = faq.iloc[best_idx]
 
     # 4. Safety Guardrail
-    if best_score < 0.55: # Higher threshold for better precision
+    if best_score < 0.50: 
         return {
             "answer": "I am sorry, I can only answer MANUU CDOE related questions. Please refine your query with more specific terms.",
             "matched_question": "No confident match",
@@ -174,6 +175,13 @@ def get_answer(user_question):
             "score": round(best_score, 3)
         }
 
+    return {
+        "answer": row["Answer"],
+        "matched_question": row["Main Question"],
+        "category": row.get("Category", "-"),
+        "intent": row.get("Intent", "-"),
+        "score": round(best_score, 3)
+    }
     return {
         "answer": row["Answer"],
         "matched_question": row["Main Question"],
