@@ -600,7 +600,7 @@ if st.session_state.get("show_analytics", False):
     st.markdown("### 📊 Diagnostic Trace")
     st.json(result) # Showing the raw dictionary result for the last query
 
-        show_speech_button(final_answer) # The speech button will now also speak the Urdu answer!
+show_speech_button(final_answer) # The speech button will now also speak the Urdu answer!
         
         # ... (rest of your analytics code)
 
